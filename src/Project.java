@@ -3,6 +3,14 @@ import java.util.List;
 
 public class Project {
     private String ident;
+    private String desc;
+    private Date inicio;
+    private Date termino;
+    private Users coord;
+    private List<Users> profs;
+    private Atividades atividades;
+    private int id;
+    private int tempo;
 
     public String getIdent() {
         return ident;
@@ -60,16 +68,12 @@ public class Project {
         this.tempo = tempo;
     }
 
-    private String desc;
-    private Date inicio;
-    private Date termino;
-    private Users coord;
-    private Users profs;
-    private Atividades atividades;
-    private int id;
-
-    public Users getProfs() {
+    public List<Users> getProfs() {
         return profs;
+    }
+
+    public void setProfs(List<Users> profs) {
+        this.profs = profs;
     }
 
     public int getId() {
@@ -80,12 +84,10 @@ public class Project {
         this.id = id;
     }
 
-    public void setProfs(Users profs) {
-        this.profs = profs;
-    }
 
 
-    private int tempo;
+
+
 }
 
 

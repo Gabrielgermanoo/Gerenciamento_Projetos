@@ -11,84 +11,138 @@ public class ProjectManager {
         List<Users> listUser = new ArrayList<>();
         List<Atividades> listAtividades = new ArrayList<>();
         List<Project> listProject = new ArrayList<>();
-        Users user = new Users();
-        Atividades atividade = new Atividades();
-        Project project = new Project();
         Scanner input = new Scanner(System.in);
+        int identificador = 0;
+        String login;
+        String password;
+        int logged = 0;
         while (true) {
-            System.out.println("Selecione uma opcao: \n" +
-                    "1 - Cadastrar usuario\n" +
-                    "2 - Deletar usuario\n" +
-                    "3 - Cadastrar Atividade\n" +
-                    "4 - Deletar Atividade\n" +
-                    "5 - Cadastrar Projeto\n" +
-                    "6 - Deletar Projeto\n" +
-                    "7 - Editar Usuario\n" +
-                    "8- Editar Projeto\n" +
-                    "9 - Editar Atividade\n" +
-                    "10 - Consultas\n" +
-                    "10 - Sair");
-
-            int option = input.nextInt();
-            input.nextLine();
-
-            if (option == 1) {
-                //int suboption = input.nextInt();
-                //input.nextLine();
-
-                addUser(input, user, listUser);
-
-            } else if (option == 2) {
-
-                delUser(input, listUser);
-
-            }
-            else if (option == 3) {
-
-                addAtividade(input, atividade, listAtividades);
-
-            }else if (option == 4) {
-
-                delAtividade(input,listAtividades);
-
-            }else if (option == 5) {
-
-                addProject(input, project, listProject, listUser, listAtividades);
-
-            }else if (option == 6) {
-
-                delProject(input, listProject);
-
-            }else if (option == 7 ) {
-                editUser(input, listUser);
-            } else if (option == 8 ) {
-                editAtividade(input, atividade,listAtividades);
-            } else if (option == 9 ) {
-                editProject(input, project, listProject, listUser, listAtividades);
-            }else if (option == 10 ) {
-                System.out.println("1: Consultar usuarios");
-                System.out.println("2: Consultar Atividades");
-                System.out.println("3: Consultar Projetos");
-                int in = input.nextInt();
+            if(logged == 0)
+            {
+                System.out.println("Selecione uma opcao:\n" +
+                        "1 - Login\n" +
+                        "2 - Cadastro de usuario\n" +
+                        "3 - Sair");
+                int opt = input.nextInt();
                 input.nextLine();
-                if (in == 1){
-                    consultaUser(listUser);
+                if (opt == 1)
+                {
+                    login = input.nextLine();
+                    password = input.nextLine();
+                    for(int i = 0; i < listUser.size(); i++){
+                        if(listUser.get(i).getLogin().equals(login) && listUser.get(i).getPassword().equals(password) )
+                        {
+                            System.out.println("Logado com sucesso!");
+                            logged = 1;
+                            identificador = listUser.get(i).getId();
+                        }
+                    }
+                    if(logged == 0){
+                        System.out.println("Usuario ou senha incorretos!");
+                    }
                 }
-                else if(in == 2){
-                    consultaAtividade(listAtividades);
+                else if(opt == 2){
+                    addUser(input, listUser);
+                } else if (opt == 3) {
+                    break;
                 }
-                else if(in == 3){
-                    consultaProject(listProject);
+                else{
+                    System.out.println("Opcao invalida!");
                 }
             }
-            else if (option == 11 ) {
-                break;
-            } else {
-                System.out.println("Opção inválida!");
+            else {
+                System.out.println("Selecione uma opcao: \n" +
+                        "1 - Usuarios\n" +
+                        "2 - Atividades\n" +
+                        "3 - Projetos\n" +
+                        "4 - Consultas\n" +
+                        "6 - Mudar senha\n" +
+                        "7 - Sair");
+
+                int option = input.nextInt();
+                input.nextLine();
+                // Usuarios
+                if (option == 1) {
+                    System.out.println("Selecione uma opcao: \n" +
+                            "1 - Cadastrar Usuario\n" +
+                            "2 - Editar Usuario\n" +
+                            "3 - Deletar Usuario");
+                    int suboption = input.nextInt();
+                    input.nextLine();
+                    if (suboption == 1) {
+                        addUser(input, listUser);
+                    } else if (suboption == 2) {
+                        editUser(input, listUser);
+                    } else if (suboption == 3) {
+                        delUser(input, listUser);
+                    } else System.out.println("Opcao invalida!");
+
+                // Atividades
+                } else if (option == 2) {
+                    System.out.println("Selecione uma opcao: \n" +
+                            "1 - Cadastrar Atividade\n" +
+                            "2 - Editar Atividade\n" +
+                            "3 - Deletar Atividade");
+                    int suboption = input.nextInt();
+                    input.nextLine();
+                    if (suboption == 1) {
+                        addAtividade(input, listAtividades, listUser);
+                    } else if (suboption == 2) {
+                        editAtividade(input, listAtividades, listUser);
+                    } else if (suboption == 3) {
+                        delAtividade(input, listAtividades);
+                    } else System.out.println("Opcao invalida!");
+
+                // Projetos
+                } else if (option == 3) {
+                    System.out.println("Selecione uma opcao: \n" +
+                            "1 - Cadastrar Projeto\n" +
+                            "2 - Editar Projeto\n" +
+                            "3 - Deletar Projeto");
+                    int suboption = input.nextInt();
+                    input.nextLine();
+                    if (suboption == 1) {
+                        addProject(input, listProject, listUser, listAtividades);
+                    } else if (suboption == 2) {
+                        editProject(input, listProject, listUser, listAtividades);
+                    } else if (suboption == 3) {
+                        delProject(input, listProject);
+                    } else System.out.println("Opcao invalida!");
+                //Consultas
+                } else if (option == 4) {
+                    System.out.println("1: Consultar usuarios");
+                    System.out.println("2: Consultar Atividades");
+                    System.out.println("3: Consultar Projetos");
+                    int in = input.nextInt();
+                    input.nextLine();
+                    if (in == 1) {
+                        consultaUser(listUser);
+                    } else if (in == 2) {
+                        consultaAtividade(listAtividades);
+                    } else if (in == 3) {
+                        consultaProject(listProject);
+                    }
+                } else if (option == 5) {
+                    break;
+                }else if (option == 6){
+                    System.out.println("Qual a nova senha?");
+                    for(int i = 0; i < listUser.size(); i++){
+                        if(listUser.get(i).getId() == identificador){
+                            password = input.nextLine();
+                            listUser.get(i).setPassword(password);
+                        }
+                    }
+                    System.out.println("Alterada com sucesso!");
+                } else if (option == 7) {
+                    logged = 0;
+                } else {
+                    System.out.println("Opcao invalida!");
+                }
             }
         }
     }
-    static void addUser(Scanner input, Users user, List<Users> listUser){
+    static void addUser(Scanner input, List<Users> listUser){
+        Users user = new Users();
         System.out.println("Digite o nome:");
         String name = input.nextLine();
         user.setName(name);
@@ -97,6 +151,12 @@ public class ProjectManager {
         user.setType(type);
         int size = listUser.size();
         user.setId(size);
+        System.out.println("Digite o login:");
+        String login = input.nextLine();
+        user.setLogin(login);
+        System.out.println("Digite a senha:");
+        String password = input.nextLine();
+        user.setPassword(password);
         listUser.add(user);
         //System.out.println(func.get(0).getName());
     }
@@ -114,7 +174,8 @@ public class ProjectManager {
             listUser.remove(del);
         }
     }
-    static void addAtividade(Scanner input, Atividades atividade, List<Atividades> listAtividades) throws ParseException {
+    static void addAtividade(Scanner input, List<Atividades> listAtividades, List<Users> listUsers) throws ParseException {
+        Atividades atividade = new Atividades();
         System.out.println("Digite o nome da atividade:");
         String ident = input.nextLine();
         atividade.setIdent(ident);
@@ -130,22 +191,49 @@ public class ProjectManager {
         String finall = input.nextLine();
         Date datef = formatter.parse(finall);
         atividade.setTermino(datef);
-        System.out.println("digite o responsavel pelo projeto:");
-        String resp = input.nextLine();
-        atividade.setResp(resp);
-        System.out.println("digite a quantidade de profissionais envolvidos:");
-        int num = input.nextInt();
-        input.nextLine();
-        int i = 0;
-        while(i < num){
-            System.out.printf("Profissional %d:", i);
-            String name = input.nextLine();
-            atividade.setProfs(name);
-            i++;
+        System.out.println("Selecione o responsavel pela Atividade:");
+        for (int i = 0; i < listUsers.size(); i++) {
+            System.out.println(listUsers.get(i).getId() + "  - " + listUsers.get(i).getName() +" ( " + listUsers.get(i).getType() + " )");
         }
+        int num0 = input.nextInt();
+        input.nextLine();
+        Users nomeResp = listUsers.get(num0);
+        atividade.setResp(nomeResp);
+        int cont = 0;
+        System.out.println("selecione os profissionais envolvidos: \n");
+        for (int i = 0; i < listUsers.size(); i++) {
+            System.out.println(listUsers.get(i).getId() + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
+            cont++;
+        }
+        int in = 0;
+        List<Users> listUserp = new ArrayList<>();
+        while(in != cont + 1) {
+            in = input.nextInt();
+            input.nextLine();
+            Users user = listUsers.get(in);
+            listUserp.add(user);
+            if (listUserp.size() == listUsers.size()) {
+                System.out.println("Tamanho maximo de profissionais selecionado!");
+                in = cont + 1;
+            }
+            else{
+            System.out.println("Adicionar mais um?\n" +
+                    "1 - Selecionar\n" +
+                    "2 - Nao selecionar");
+            int aa = input.nextInt();
+            input.nextLine();
+            if (aa == 2) in = cont + 1;
+            else if (aa == 1) {
+                in = 0;
+            }
+            }
+        }
+        atividade.setProfs(listUserp);
         System.out.println("digite as tarefas a serem realizadas:");
         String jobs = input.nextLine();
         atividade.setJobs(jobs);
+        int size = listAtividades.size();
+        atividade.setId(size);
         listAtividades.add(atividade);
         //System.out.println(func.get(0).getName());
     }
@@ -164,7 +252,8 @@ public class ProjectManager {
         }
     }
 
-    static void addProject(Scanner input, Project project, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades) throws ParseException {
+    static void addProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades) throws ParseException {
+        Project project = new Project();
         System.out.println("Digite o nome do Projeto:");
         String ident = input.nextLine();
         project.setIdent(ident);
@@ -184,31 +273,52 @@ public class ProjectManager {
 
         for (int i = 0; i < listUsers.size(); i++) {
             if (listUsers.get(i).getType().equals("Professor") || listUsers.get(i).getType().equals("Pesquisador")) {
-                System.out.println(i + ": " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
+                System.out.println(i + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
             }
         }
         int num = input.nextInt();
         input.nextLine();
         Users nomeCoord = listUsers.get(num);
         project.setCoord(nomeCoord);
-        System.out.println("selecione o profissional envolvido:");
+        int cont = 0;
+        System.out.println("selecione os profissionais envolvidos: \n");
         for (int i = 0; i < listUsers.size(); i++) {
-            System.out.println(listUsers.get(i).getName() + listUsers.get(i).getType());
+            System.out.println(listUsers.get(i).getId() + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
+            cont++;
         }
-        int num2 = input.nextInt();
-        input.nextLine();
-        Users pros = listUsers.get(num2);
-        project.setProfs(pros);
+        int in = 0;
+        List<Users> listUserp = new ArrayList<>();
+        while(in != cont + 1){
+            in = input.nextInt();
+            input.nextLine();
+            Users user = listUsers.get(in);
+            listUserp.add(user);
+            if(listUserp.size() == listUsers.size()){
+                System.out.println("Tamanho maximo de profissionais selecionado!");
+                in = cont + 1;
+            }
+            System.out.println("Adicionar mais um?\n" +
+                    "1 - Selecionar\n" +
+                    "2 - Nao selecionar");
+            int aa = input.nextInt();
+            input.nextLine();
+            if (aa == 2) in = cont + 1;
+            else if (aa == 1) {
+                in = 0;
+            }
+        }
+
+        project.setProfs(listUserp);
         System.out.println("Selecione a atividade a ser realizada:");
         for (int i = 0; i < listAtividades.size(); i++) {
-            System.out.println(listAtividades.get(i).getId() + listAtividades.get(i).getDesc());
+            System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc());
         }
         int num1 = input.nextInt();
         Atividades atividadess = listAtividades.get(num1);
         project.setAtividades(atividadess);
         System.out.println("Bolsa para cada profissional");
         for (int i = 0; i < listUsers.size(); i++) {
-            System.out.println(listUsers.get(i).getName() + listUsers.get(i).getType());
+            System.out.println(listUsers.get(i).getName() + " " + listUsers.get(i).getType());
             Double valor = input.nextDouble();
             input.nextLine();
             listUsers.get(i).setBolsa(valor);
@@ -251,14 +361,14 @@ public class ProjectManager {
         user.setType(type);
     }
 
-    static void editAtividade(Scanner input, Atividades atividade, List<Atividades> listAtividades) throws ParseException {
+    static void editAtividade(Scanner input, List<Atividades> listAtividades, List<Users> listUsers) throws ParseException {
         System.out.println("Selecione uma Atividade para atualizar");
         for(int i = 0; i < listAtividades.size(); i++){
             System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc() + " " + listAtividades.get(i).getId());
         }
         int numm = input.nextInt();
         input.nextLine();
-        atividade = listAtividades.get(numm);
+        Atividades atividade = listAtividades.get(numm);
         System.out.println("Digite o nome da atividade:");
         String ident = input.nextLine();
         atividade.setIdent(ident);
@@ -274,18 +384,42 @@ public class ProjectManager {
         String finall = input.nextLine();
         Date datef = formatter.parse(finall);
         atividade.setTermino(datef);
-        System.out.println("digite o responsavel pelo projeto:");
-        String resp = input.nextLine();
-        atividade.setResp(resp);
-        System.out.println("digite a quantidade de profissionais envolvidos:");
-        int num = input.nextInt();
+        System.out.println("Selecione o responsavel pela Atividade:");
+        for (int i = 0; i < listUsers.size(); i++) {
+            System.out.println(listUsers.get(i).getId() + "  - " + listUsers.get(i).getName() +" ( " + listUsers.get(i).getType() + " )");
+        }
+        int num0 = input.nextInt();
         input.nextLine();
-        int i = 0;
-        while(i < num){
-            System.out.printf("Profissional %d:", i);
-            String name = input.nextLine();
-            atividade.setProfs(name);
-            i++;
+        Users nomeResp = listUsers.get(num0);
+        atividade.setResp(nomeResp);
+        int cont = 0;
+        System.out.println("selecione os profissionais envolvidos: \n");
+        for (int i = 0; i < listUsers.size(); i++) {
+            System.out.println(listUsers.get(i).getId() + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
+            cont++;
+        }
+        int in = 0;
+        List<Users> listUserp = new ArrayList<>();
+        while(in != cont + 1) {
+            in = input.nextInt();
+            input.nextLine();
+            Users user = listUsers.get(in);
+            listUserp.add(user);
+            if (listUserp.size() == listUsers.size()) {
+                System.out.println("Tamanho maximo de profissionais selecionado!");
+                in = cont + 1;
+            }
+            else{
+                System.out.println("Adicionar mais um?\n" +
+                        "1 - Selecionar\n" +
+                        "2 - Nao selecionar");
+                int aa = input.nextInt();
+                input.nextLine();
+                if (aa == 2) in = cont + 1;
+                else if (aa == 1) {
+                    in = 0;
+                }
+            }
         }
         System.out.println("digite as tarefas a serem realizadas:");
         String jobs = input.nextLine();
@@ -293,14 +427,14 @@ public class ProjectManager {
         listAtividades.add(atividade);
     }
 
-    static void editProject(Scanner input, Project project, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades) throws ParseException {
+    static void editProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades) throws ParseException {
         System.out.println("Selecione uma Atividade para atualizar");
         for(int i = 0; i < listProject.size(); i++){
             System.out.println(listProject.get(i).getId() + " " + listProject.get(i).getDesc() + " " + listProject.get(i).getId());
         }
         int numm = input.nextInt();
         input.nextLine();
-        project = listProject.get(numm);
+        Project project = listProject.get(numm);
         System.out.println("Digite o nome do Projeto:");
         String ident = input.nextLine();
         project.setIdent(ident);
@@ -327,14 +461,33 @@ public class ProjectManager {
         input.nextLine();
         Users nomeCoord = listUsers.get(num);
         project.setCoord(nomeCoord);
-        System.out.println("selecione o profissional envolvido:");
+        int cont = 0;
+        System.out.println("selecione os profissionais envolvidos: \n");
         for (int i = 0; i < listUsers.size(); i++) {
-            System.out.println(listUsers.get(i).getName() + listUsers.get(i).getType());
+            System.out.println(listUsers.get(i).getId() + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
+            cont++;
         }
-        int num2 = input.nextInt();
-        input.nextLine();
-        Users pros = listUsers.get(num2);
-        project.setProfs(pros);
+        int in = 0;
+        List<Users> listUserp = new ArrayList<>();
+        while(in != cont + 1){
+            in = input.nextInt();
+            input.nextLine();
+            Users user = listUsers.get(in);
+            listUserp.add(user);
+            if(listUserp.size() == listUsers.size()){
+                System.out.println("Tamanho maximo de profissionais selecionado!");
+                in = cont + 1;
+            }
+            System.out.println("Adicionar mais um?\n" +
+                    "1 - Selecionar\n" +
+                    "2 - Nao selecionar");
+            int aa = input.nextInt();
+            input.nextLine();
+            if (aa == 2) in = cont + 1;
+            else if (aa == 1) {
+                in = 0;
+            }
+        }
         System.out.println("Selecione a atividade a ser realizada:");
         for (int i = 0; i < listAtividades.size(); i++) {
             System.out.println(listAtividades.get(i).getId() + listAtividades.get(i).getDesc());

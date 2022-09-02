@@ -1,16 +1,21 @@
 import java.util.Date;
-
+import java.util.List;
 public class Atividades {
     private String ident;
     private String desc;
     private Date inicio;
     private Date termino;
-    private String resp;
-
+    private Users resp;
     private int id;
+    private List<Users> profs;
+    private String jobs;
 
-    public String getResp() {
-        return resp;
+    public List<Users> getProfs() {
+        return profs;
+    }
+
+    public void setProfs(List<Users> profs) {
+        this.profs = profs;
     }
 
     public int getId() {
@@ -21,20 +26,13 @@ public class Atividades {
         this.id = id;
     }
 
-    public String getProfs() {
-        return profs;
+    public Users getResp() {
+        return resp;
     }
 
-    public void setResp(String resp) {
+    public void setResp(Users resp) {
         this.resp = resp;
     }
-
-    public void setProfs(String profs) {
-        this.profs = profs;
-    }
-
-    private String profs;
-    private String jobs;
 
     public Atividades(){
     }

@@ -1,5 +1,44 @@
+import java.util.List;
+
 public class Users {
     private String name;
+    private String login;
+    private String password;
+    private List<Project> listUserProjects;
+    private List<Atividades> listUserAtividades;
+
+    public List<Atividades> getListUserAtividades() {
+        return listUserAtividades;
+    }
+
+    public void setListUserAtividades(List<Atividades> listUserAtividades) {
+        this.listUserAtividades = listUserAtividades;
+    }
+
+    public List<Project> getListUserProjects() {
+        return listUserProjects;
+    }
+
+    public void setListUserProjects(List<Project> listUserProjects) {
+        this.listUserProjects = listUserProjects;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     private String type;
     private int id;
     private double bolsa;
