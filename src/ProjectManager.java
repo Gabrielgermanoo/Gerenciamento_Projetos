@@ -1,6 +1,8 @@
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,7 +16,7 @@ public class ProjectManager {
         Scanner input = new Scanner(System.in);
         int identificador = 0;
         String login;
-        String password;
+        String password = "";
         int logged = 0;
         while (true) {
             if(logged == 0)
@@ -57,7 +59,8 @@ public class ProjectManager {
                         "3 - Projetos\n" +
                         "4 - Consultas\n" +
                         "6 - Mudar senha\n" +
-                        "7 - Sair");
+                        "7 - Relatorios\n" +
+                        "8 - Sair");
 
                 int option = input.nextInt();
                 input.nextLine();
@@ -102,9 +105,9 @@ public class ProjectManager {
                     int suboption = input.nextInt();
                     input.nextLine();
                     if (suboption == 1) {
-                        addProject(input, listProject, listUser, listAtividades);
+                        addProject(input, listProject, listUser, listAtividades, identificador);
                     } else if (suboption == 2) {
-                        editProject(input, listProject, listUser, listAtividades);
+                        editProject(input, listProject, listUser, listAtividades, identificador);
                     } else if (suboption == 3) {
                         delProject(input, listProject);
                     } else System.out.println("Opcao invalida!");
@@ -125,15 +128,10 @@ public class ProjectManager {
                 } else if (option == 5) {
                     break;
                 }else if (option == 6){
-                    System.out.println("Qual a nova senha?");
-                    for(int i = 0; i < listUser.size(); i++){
-                        if(listUser.get(i).getId() == identificador){
-                            password = input.nextLine();
-                            listUser.get(i).setPassword(password);
-                        }
-                    }
-                    System.out.println("Alterada com sucesso!");
+                    changePass(listUser, identificador, password);
                 } else if (option == 7) {
+                    logged = 0;
+                }else if (option == 8) {
                     logged = 0;
                 } else {
                     System.out.println("Opcao invalida!");
@@ -184,7 +182,7 @@ public class ProjectManager {
         atividade.setDesc(desc);
         System.out.println("Digite a data de inicio da atividade");
         String inicio = input.nextLine();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date datei = formatter.parse(inicio);
         atividade.setInicio(datei);
         System.out.println("digite a data de termino da atividade:");
@@ -214,7 +212,7 @@ public class ProjectManager {
             listUserp.add(user);
             if (listUserp.size() == listUsers.size()) {
                 System.out.println("Tamanho maximo de profissionais selecionado!");
-                in = cont + 1;
+                in += cont + 1;
             }
             else{
             System.out.println("Adicionar mais um?\n" +
@@ -252,82 +250,105 @@ public class ProjectManager {
         }
     }
 
-    static void addProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades) throws ParseException {
-        Project project = new Project();
-        System.out.println("Digite o nome do Projeto:");
-        String ident = input.nextLine();
-        project.setIdent(ident);
-        System.out.println("Digite a descricao do Projeto:");
-        String desc = input.nextLine();
-        project.setDesc(desc);
-        System.out.println("Digite a data de inicio da atividade");
-        String inicio = input.nextLine();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        Date datei = formatter.parse(inicio);
-        project.setInicio(datei);
-        System.out.println("digite a data de termino da atividade:");
-        String finall = input.nextLine();
-        Date datef = formatter.parse(finall);
-        project.setTermino(datef);
-        System.out.println("Selecione o coordenador do projeto:");
+    static void addProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades, int identificador) throws ParseException {
+        if(listUsers.get(identificador).getType().equals("Professor") || listUsers.get(identificador).getType().equals("Pesquisador")) {
+            Project project = new Project();
+            project.setStatus("Em processo de criacao");
+            System.out.println("Digite o nome do Projeto:");
+            String ident = input.nextLine();
+            project.setIdent(ident);
+            System.out.println("Digite a descricao do Projeto:");
+            String desc = input.nextLine();
+            project.setDesc(desc);
+            System.out.println("Digite a data de inicio da atividade");
+            String inicio = input.nextLine();
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date datei = formatter.parse(inicio);
+            project.setInicio(datei);
+            System.out.println("digite a data de termino da atividade:");
+            String finall = input.nextLine();
+            Date datef = formatter.parse(finall);
+            project.setTermino(datef);
+            System.out.println("Selecione o coordenador do projeto:");
 
-        for (int i = 0; i < listUsers.size(); i++) {
-            if (listUsers.get(i).getType().equals("Professor") || listUsers.get(i).getType().equals("Pesquisador")) {
-                System.out.println(i + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
+            for (int i = 0; i < listUsers.size(); i++) {
+                if (listUsers.get(i).getType().equals("Professor") || listUsers.get(i).getType().equals("Pesquisador")) {
+                    System.out.println(i + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
+                }
             }
-        }
-        int num = input.nextInt();
-        input.nextLine();
-        Users nomeCoord = listUsers.get(num);
-        project.setCoord(nomeCoord);
-        int cont = 0;
-        System.out.println("selecione os profissionais envolvidos: \n");
-        for (int i = 0; i < listUsers.size(); i++) {
-            System.out.println(listUsers.get(i).getId() + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
-            cont++;
-        }
-        int in = 0;
-        List<Users> listUserp = new ArrayList<>();
-        while(in != cont + 1){
-            in = input.nextInt();
+            int num = input.nextInt();
             input.nextLine();
-            Users user = listUsers.get(in);
-            listUserp.add(user);
-            if(listUserp.size() == listUsers.size()){
-                System.out.println("Tamanho maximo de profissionais selecionado!");
-                in = cont + 1;
+            Users nomeCoord = listUsers.get(num);
+            project.setCoord(nomeCoord);
+            int cont = 0;
+            System.out.println("selecione os profissionais envolvidos: \n");
+            for (int i = 0; i < listUsers.size(); i++) {
+                System.out.println(listUsers.get(i).getId() + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
+                cont++;
             }
-            System.out.println("Adicionar mais um?\n" +
-                    "1 - Selecionar\n" +
-                    "2 - Nao selecionar");
-            int aa = input.nextInt();
-            input.nextLine();
-            if (aa == 2) in = cont + 1;
-            else if (aa == 1) {
-                in = 0;
+            int in = 0;
+            List<Users> listUserp = new ArrayList<>();
+            while (in != cont + 1) {
+                in = input.nextInt();
+                input.nextLine();
+                Users user = listUsers.get(in);
+                listUserp.add(user);
+                if (listUserp.size() == listUsers.size()) {
+                    System.out.println("Tamanho maximo de profissionais selecionado!");
+                    in = cont + 1;
+                }
+                System.out.println("Adicionar mais um?\n" +
+                        "1 - Selecionar\n" +
+                        "2 - Nao selecionar");
+                int aa = input.nextInt();
+                input.nextLine();
+                if (aa == 2) in = cont + 1;
+                else if (aa == 1) {
+                    in = 0;
+                }
             }
-        }
 
-        project.setProfs(listUserp);
-        System.out.println("Selecione a atividade a ser realizada:");
-        for (int i = 0; i < listAtividades.size(); i++) {
-            System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc());
-        }
-        int num1 = input.nextInt();
-        Atividades atividadess = listAtividades.get(num1);
-        project.setAtividades(atividadess);
-        System.out.println("Bolsa para cada profissional");
-        for (int i = 0; i < listUsers.size(); i++) {
-            System.out.println(listUsers.get(i).getName() + " " + listUsers.get(i).getType());
-            Double valor = input.nextDouble();
+            project.setProfs(listUserp);
+            System.out.println("Selecione a atividade a ser realizada:");
+            for (int i = 0; i < listAtividades.size(); i++) {
+                System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc());
+            }
+            int num1 = input.nextInt();
+            Atividades atividadess = listAtividades.get(num1);
+            project.setAtividades(atividadess);
+            System.out.println("Bolsa para cada profissional");
+            for (int i = 0; i < listUsers.size(); i++) {
+                System.out.println(listUserp.get(i).getName() + " " + listUserp.get(i).getType());
+                Double valor = input.nextDouble();
+                input.nextLine();
+                listUserp.get(i).setBolsa(valor);
+            }
+            System.out.println("Periodo de vigencia");
+            int tempo = input.nextInt();
             input.nextLine();
-            listUsers.get(i).setBolsa(valor);
+            project.setTempo(tempo);
+            project.setStatus("Iniciado");
+            LocalDate today = java.time.LocalDate.now();
+            Date todayd = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            int coordopt = 0;
+            System.out.println("Iniciar projeto?" +
+                    "1 - SIM\n" +
+                    "2 - NAO");
+            coordopt = input.nextInt();
+            input.nextLine();
+            if(coordopt == 1) {
+                if((project.getInicio().after(todayd))){
+                    project.setStatus("Em andamento");
+                }
+            } else if (coordopt == 2) {
+                project.setStatus("Iniciado");
+            }
+            else System.out.println("Opcao Invalida!");
+            listProject.add(project);
         }
-        System.out.println("Periodo de vigencia");
-        int tempo = input.nextInt();
-        input.nextLine();
-        project.setTempo(tempo);
-        listProject.add(project);
+        else{
+            System.out.println("Voce nao tem permissao para isso!");
+        }
         //System.out.println(func.get(0).getName());
     }
     static void delProject(Scanner input, List<Project> listProject){
@@ -377,7 +398,7 @@ public class ProjectManager {
         atividade.setDesc(desc);
         System.out.println("Digite a data de inicio da atividade");
         String inicio = input.nextLine();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date datei = formatter.parse(inicio);
         atividade.setInicio(datei);
         System.out.println("digite a data de termino da atividade:");
@@ -427,7 +448,7 @@ public class ProjectManager {
         listAtividades.add(atividade);
     }
 
-    static void editProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades) throws ParseException {
+    static void editProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades, int identificador) throws ParseException {
         System.out.println("Selecione uma Atividade para atualizar");
         for(int i = 0; i < listProject.size(); i++){
             System.out.println(listProject.get(i).getId() + " " + listProject.get(i).getDesc() + " " + listProject.get(i).getId());
@@ -443,7 +464,7 @@ public class ProjectManager {
         project.setDesc(desc);
         System.out.println("Digite a data de inicio da atividade");
         String inicio = input.nextLine();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         Date datei = formatter.parse(inicio);
         project.setInicio(datei);
         System.out.println("digite a data de termino da atividade:");
@@ -497,15 +518,32 @@ public class ProjectManager {
         project.setAtividades(atividadess);
         System.out.println("Bolsa para cada profissional");
         for (int i = 0; i < listUsers.size(); i++) {
-            System.out.println(listUsers.get(i).getName() + listUsers.get(i).getType());
+            System.out.println(listUserp.get(i).getName() + listUserp.get(i).getType());
             Double valor = input.nextDouble();
             input.nextLine();
-            listUsers.get(i).setBolsa(valor);
+            listUserp.get(i).setBolsa(valor);
         }
         System.out.println("Periodo de vigencia");
         int tempo = input.nextInt();
         input.nextLine();
         project.setTempo(tempo);
+        LocalDate today = java.time.LocalDate.now();
+        Date todayd = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        int coordopt = 0;
+        if (listUsers.get(identificador).equals(listProject.get(identificador).getCoord())) {
+            System.out.println("Concluir projeto?" +
+                    "1 - SIM\n" +
+                    "2 - NAO");
+            coordopt = input.nextInt();
+            input.nextLine();
+            if (coordopt == 1) {
+                project.setStatus("Concluido");
+                System.out.println("Concluido");
+            } else if ( coordopt == 2) {
+                System.out.println("Sem alteracoes!");
+            }
+            else System.out.println("Opcao invalida!");
+        }
         listProject.add(project);
     }
     static void consultaUser(List<Users> listUser){
@@ -522,6 +560,17 @@ public class ProjectManager {
         for(int i = 0; i < listProject.size(); i++){
             System.out.println(listProject.get(i).getId() + " " + listProject.get(i).getDesc());
         }
+    }
+    static void changePass(List<Users> listUser, int identificador, String password){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Qual a nova senha?");
+        for(int i = 0; i < listUser.size(); i++){
+            if(listUser.get(i).getId() == identificador){
+                password = input.nextLine();
+                listUser.get(i).setPassword(password);
+            }
+        }
+        System.out.println("Alterada com sucesso!");
     }
 }
 

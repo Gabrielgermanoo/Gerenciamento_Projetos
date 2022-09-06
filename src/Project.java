@@ -11,6 +11,15 @@ public class Project {
     private Atividades atividades;
     private int id;
     private int tempo;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getIdent() {
         return ident;
