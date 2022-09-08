@@ -3,10 +3,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
+
 
 public class ProjectManager {
     public static void main(String[] args) throws ParseException {
@@ -29,7 +28,9 @@ public class ProjectManager {
                 input.nextLine();
                 if (opt == 1)
                 {
+                    System.out.println("Login:");
                     login = input.nextLine();
+                    System.out.println("Senha: ");
                     password = input.nextLine();
                     for(int i = 0; i < listUser.size(); i++){
                         if(listUser.get(i).getLogin().equals(login) && listUser.get(i).getPassword().equals(password) )
@@ -130,8 +131,18 @@ public class ProjectManager {
                 }else if (option == 6){
                     changePass(listUser, identificador, password);
                 } else if (option == 7) {
-                    logged = 0;
+                    System.out.println("Relatorios:\n" +
+                            "1 - Relatorio de projeto\n" +
+                            "2 - Relatorio de atividade");
+                    int suboption = input.nextInt();
+                    input.nextLine();
+                    if (suboption == 1) projetoRelatorio(listProject);
+                    else if (suboption == 2) {
+                        atividadeRelatorio(listAtividades);
+                    }
                 }else if (option == 8) {
+                    logged = 0;
+                }else if (option == 9) {
                     logged = 0;
                 } else {
                     System.out.println("Opcao invalida!");
@@ -269,8 +280,15 @@ public class ProjectManager {
             String finall = input.nextLine();
             Date datef = formatter.parse(finall);
             project.setTermino(datef);
+            Calendar m_calendar = Calendar.getInstance();
+            m_calendar.setTime(datei);
+            int nMonth1 = 12 * m_calendar.get(Calendar.YEAR)+ m_calendar.get(Calendar.MONTH);
+            m_calendar.setTime(datef);
+            int nMonth2 = 12*m_calendar.get(Calendar.YEAR) + m_calendar.get(Calendar.MONTH);
+            int diff = Math.abs(nMonth2 - nMonth1);
+            System.out.println("Tempo: " + diff + "meses)");
+            project.setTempo(diff);
             System.out.println("Selecione o coordenador do projeto:");
-
             for (int i = 0; i < listUsers.size(); i++) {
                 if (listUsers.get(i).getType().equals("Professor") || listUsers.get(i).getType().equals("Pesquisador")) {
                     System.out.println(i + " - " + listUsers.get(i).getName() + " " + listUsers.get(i).getType());
@@ -295,7 +313,8 @@ public class ProjectManager {
                 listUserp.add(user);
                 if (listUserp.size() == listUsers.size()) {
                     System.out.println("Tamanho maximo de profissionais selecionado!");
-                    in = cont + 1;
+                    in += cont + 1;
+                    break;
                 }
                 System.out.println("Adicionar mais um?\n" +
                         "1 - Selecionar\n" +
@@ -309,12 +328,31 @@ public class ProjectManager {
             }
 
             project.setProfs(listUserp);
-            System.out.println("Selecione a atividade a ser realizada:");
-            for (int i = 0; i < listAtividades.size(); i++) {
-                System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc());
+
+            System.out.println("Selecione as atividades a serem realizadas:");
+            int inn = 0;
+            int sizeatividade = listAtividades.size();
+            List<Atividades> atividadess = new ArrayList<>();
+            while(inn != sizeatividade + 1) {
+                for (int i = 0; i < listAtividades.size(); i++) {
+                    System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc());
+                }
+                int num1 = input.nextInt();
+                Atividades atividadeaux = listAtividades.get(num1);
+                atividadess.add(atividadeaux);
+                if(atividadess.size() == listAtividades.size()){
+                    inn += sizeatividade + 1;
+                }
+                System.out.println("Adicionar mais uma atividade?\n" +
+                        "1 - Selecionar\n" +
+                        "2 - Nao selecionar");
+                int aa = input.nextInt();
+                input.nextLine();
+                if (aa == 2) inn = sizeatividade + 1;
+                else if (aa == 1) {
+                    inn = 0;
+                }
             }
-            int num1 = input.nextInt();
-            Atividades atividadess = listAtividades.get(num1);
             project.setAtividades(atividadess);
             System.out.println("Bolsa para cada profissional");
             for (int i = 0; i < listUsers.size(); i++) {
@@ -323,10 +361,6 @@ public class ProjectManager {
                 input.nextLine();
                 listUserp.get(i).setBolsa(valor);
             }
-            System.out.println("Periodo de vigencia");
-            int tempo = input.nextInt();
-            input.nextLine();
-            project.setTempo(tempo);
             project.setStatus("Iniciado");
             LocalDate today = java.time.LocalDate.now();
             Date todayd = Date.from(today.atStartOfDay(ZoneId.systemDefault()).toInstant());
@@ -509,12 +543,30 @@ public class ProjectManager {
                 in = 0;
             }
         }
-        System.out.println("Selecione a atividade a ser realizada:");
-        for (int i = 0; i < listAtividades.size(); i++) {
-            System.out.println(listAtividades.get(i).getId() + listAtividades.get(i).getDesc());
+        System.out.println("Selecione as atividades a serem realizadas:");
+        int inn = 0;
+        int sizeatividade = listAtividades.size();
+        List<Atividades> atividadess = new ArrayList<>();
+        while(inn != sizeatividade + 1) {
+            for (int i = 0; i < listAtividades.size(); i++) {
+                System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc());
+            }
+            int num1 = input.nextInt();
+            Atividades atividadeaux = listAtividades.get(num1);
+            atividadess.add(atividadeaux);
+            if(atividadess.size() == listAtividades.size()){
+                inn += sizeatividade + 1;
+            }
+            System.out.println("Adicionar mais uma atividade?\n" +
+                    "1 - Selecionar\n" +
+                    "2 - Nao selecionar");
+            int aa = input.nextInt();
+            input.nextLine();
+            if (aa == 2) inn = sizeatividade + 1;
+            else if (aa == 1) {
+                inn = 0;
+            }
         }
-        int num1 = input.nextInt();
-        Atividades atividadess = listAtividades.get(num1);
         project.setAtividades(atividadess);
         System.out.println("Bolsa para cada profissional");
         for (int i = 0; i < listUsers.size(); i++) {
@@ -572,5 +624,70 @@ public class ProjectManager {
         }
         System.out.println("Alterada com sucesso!");
     }
+    static void projetoRelatorio(List<Project> listProject){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Selecionar um projeto:\n");
+        for(int i = 0; i < listProject.size();  i++){
+            System.out.println(listProject.get(i).getId() + " -  " + listProject.get(i).getIdent() + " ( " + listProject.get(i).getIdent() + " )");
+        }
+        int opt = input.nextInt();
+        input.nextLine();
+        gerarRelatorioProject(listProject, opt);
+    }
+    static void gerarRelatorioProject(List<Project> listProject, int ident){
+        System.out.println("Nome do Projeto: ");
+        System.out.println(listProject.get(ident).getIdent());
+        System.out.println("Descricao: \n" + listProject.get(ident).getDesc());
+        System.out.println("Status atual: ");
+        System.out.println(listProject.get(ident).getStatus());
+        System.out.println("Coordenador: " +
+                listProject.get(ident).getCoord().getName());
+        System.out.println("Profissionais envolvidos: ");
+        for (int i = 0; i < listProject.get(ident).getProfs().size(); i++){
+            System.out.println(listProject.get(ident).getProfs().get(i).getName());
+        }
+        System.out.println("Atividades envolvidas no Projeto:\n");
+        for (int i = 0; i < listProject.get(ident).getAtividades().size(); i++){
+            System.out.println(listProject.get(ident).getAtividades().get(i).getIdent() + " "  + listProject.get(ident).getAtividades().get(i).getDesc());
+        }
+        System.out.println("Inicio: " + listProject.get(ident).getInicio() + " \n" + "Termino: " + listProject.get(ident).getTermino());
+        System.out.println("Tempo: " + listProject.get(ident).getTempo());
+    }
+    static void atividadeRelatorio(List<Atividades> listAtividade){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Selecionar uma Atividade:\n");
+        for(int i = 0; i < listAtividade.size();  i++){
+            System.out.println(listAtividade.get(i).getId() + " -  " + listAtividade.get(i).getIdent() + " ( " + listAtividade.get(i).getIdent() + " )");
+        }
+        int opt = input.nextInt();
+        input.nextLine();
+        gerarRelatorioAtividade(listAtividade, opt);
+    }
+    static void gerarRelatorioAtividade(List<Atividades> listAtividade, int ident){
+        System.out.println("Nome do Projeto: ");
+        System.out.println(listAtividade.get(ident).getIdent());
+        System.out.println("Descricao: \n" + listAtividade.get(ident).getDesc());
+        System.out.println("Inicio: " + listAtividade.get(ident).getInicio() + " \n" + "Termino: " + listAtividade.get(ident).getTermino());
+        System.out.println("Responsavel pela Atividade: \n" +
+                listAtividade.get(ident).getResp().getName());
+        System.out.println("Profissionais envolvidos: ");
+        for (int i = 0; i < listAtividade.get(ident).getProfs().size(); i++){
+            System.out.println(listAtividade.get(ident).getProfs().get(i).getName());
+        }
+    }
+    static void gerenciarBolsas(List<Project> listProject){
+        Scanner input = new Scanner(System.in);
+        for(int i = 0; i < listProject.size(); i++){
+            System.out.println(listProject.get(i).getId() + " - " + listProject.get(i).getIdent() + " " + listProject.get(i).getDesc());
+        }
+        int opt = input.nextInt();
+        input.nextLine();
+        bolsa(listProject, opt);
+    }
+    static void bolsa(List<Project> listProject, int id){
+        for(int i = 0; i < listProject.size(); i++) {
+            System.out.println("Profissional: " + listProject.get(id).getProfs().get(i).getName() + " valor bolsa: "
+                    + listProject.get(id).getProfs().get(i).getBolsa() + "(" + listProject.get(id).getProfs().get(i).getBolsa() * listProject.get(id).getTempo() + " ) ");
+        }
+    }
 }
-

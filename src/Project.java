@@ -8,7 +8,7 @@ public class Project {
     private Date termino;
     private Users coord;
     private List<Users> profs;
-    private Atividades atividades;
+    private List<Atividades> atividades;
     private int id;
     private int tempo;
     private String status;
@@ -61,11 +61,11 @@ public class Project {
         this.coord = coord;
     }
 
-    public Atividades getAtividades() {
+    public List<Atividades> getAtividades() {
         return atividades;
     }
 
-    public void setAtividades(Atividades atividades) {
+    public void setAtividades(List<Atividades> atividades) {
         this.atividades = atividades;
     }
 
