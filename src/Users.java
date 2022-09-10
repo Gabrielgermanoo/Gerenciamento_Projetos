@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Stack;
 
 public class Users {
     private String name;
@@ -6,6 +7,15 @@ public class Users {
     private String password;
     private List<Project> listUserProjects;
     private List<Atividades> listUserAtividades;
+    private Acoes stackUsers;
+
+    public Acoes getStackUsers() {
+        return stackUsers;
+    }
+
+    public void setStackUsers(Acoes stackUsers) {
+        this.stackUsers = stackUsers;
+    }
 
     public List<Atividades> getListUserAtividades() {
         return listUserAtividades;

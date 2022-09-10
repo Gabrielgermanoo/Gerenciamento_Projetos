@@ -5,13 +5,13 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.*;
 
-
-
 public class ProjectManager {
     public static void main(String[] args) throws ParseException {
         List<Users> listUser = new ArrayList<>();
         List<Atividades> listAtividades = new ArrayList<>();
         List<Project> listProject = new ArrayList<>();
+        Acoes acoes = new Acoes();
+        Acoes redo = new Acoes();
         Scanner input = new Scanner(System.in);
         int identificador = 0;
         String login;
@@ -45,7 +45,7 @@ public class ProjectManager {
                     }
                 }
                 else if(opt == 2){
-                    addUser(input, listUser);
+                    addUser(input, listUser, acoes);
                 } else if (opt == 3) {
                     break;
                 }
@@ -61,7 +61,8 @@ public class ProjectManager {
                         "4 - Consultas\n" +
                         "6 - Mudar senha\n" +
                         "7 - Relatorios\n" +
-                        "8 - Sair");
+                        "8 - Gerenciar bolsas (Projetos) \n" +
+                        "9 - Sair");
 
                 int option = input.nextInt();
                 input.nextLine();
@@ -74,11 +75,11 @@ public class ProjectManager {
                     int suboption = input.nextInt();
                     input.nextLine();
                     if (suboption == 1) {
-                        addUser(input, listUser);
+                        addUser(input, listUser, acoes);
                     } else if (suboption == 2) {
-                        editUser(input, listUser);
+                        editUser(input, listUser, acoes);
                     } else if (suboption == 3) {
-                        delUser(input, listUser);
+                        delUser(input, listUser, acoes);
                     } else System.out.println("Opcao invalida!");
 
                 // Atividades
@@ -141,8 +142,21 @@ public class ProjectManager {
                         atividadeRelatorio(listAtividades);
                     }
                 }else if (option == 8) {
-                    logged = 0;
-                }else if (option == 9) {
+                    gerenciarBolsas(listProject);
+                } else if (option == 9) {
+                    int opt = 0;
+                    System.out.println("Selecione uma opcao: ");
+                    switch (opt){
+                        case 1:
+                            desfazer(acoes, redo);
+                        case 2:
+                            refazer(acoes, redo);
+                        default:
+                            System.out.println("Opcao invalida!");
+
+                    }
+                    desfazer(acoes, redo);
+                } else if (option == 10) {
                     logged = 0;
                 } else {
                     System.out.println("Opcao invalida!");
@@ -150,8 +164,9 @@ public class ProjectManager {
             }
         }
     }
-    static void addUser(Scanner input, List<Users> listUser){
+    static void addUser(Scanner input, List<Users> listUser, Acoes redo){
         Users user = new Users();
+        Stack stack = new Stack();
         System.out.println("Digite o nome:");
         String name = input.nextLine();
         user.setName(name);
@@ -166,10 +181,14 @@ public class ProjectManager {
         System.out.println("Digite a senha:");
         String password = input.nextLine();
         user.setPassword(password);
+        stack.push(user);
+        redo.setStkRedo(stack);
         listUser.add(user);
         //System.out.println(func.get(0).getName());
     }
-    static void delUser(Scanner input, List<Users> listUser){
+    static void delUser(Scanner input, List<Users> listUser, Acoes redo){
+        Stack stack = new Stack();
+        Users user;
         if (listUser.size()==0){
             System.out.println("Nao ha funcionarios cadastrados");
         }
@@ -180,7 +199,11 @@ public class ProjectManager {
             }
             int del = input.nextInt();
             input.nextLine();
+            user = listUser.get(del);
             listUser.remove(del);
+            stack.push(user);
+            redo.setStkRedo(stack);
+
         }
     }
     static void addAtividade(Scanner input, List<Atividades> listAtividades, List<Users> listUsers) throws ParseException {
@@ -399,7 +422,8 @@ public class ProjectManager {
         }
     }
 
-    static void editUser(Scanner input, List<Users> listUser){
+    static void editUser(Scanner input, List<Users> listUser, Acoes redo){
+        Stack stack = new Stack<>();
         System.out.println("Selecione um usuario para atualizar");
         for(int i = 0; i < listUser.size(); i++){
             System.out.println(listUser.get(i).getName() + " " + listUser.get(i).getType() + " " + listUser.get(i).getId());
@@ -414,6 +438,8 @@ public class ProjectManager {
         System.out.printf("Editar tipo (%s)", listUser.get(num).getType());
         String type = input.nextLine();
         user.setType(type);
+        stack.push(user);
+        redo.setStkRedo(stack);
     }
 
     static void editAtividade(Scanner input, List<Atividades> listAtividades, List<Users> listUsers) throws ParseException {
@@ -689,5 +715,22 @@ public class ProjectManager {
             System.out.println("Profissional: " + listProject.get(id).getProfs().get(i).getName() + " valor bolsa: "
                     + listProject.get(id).getProfs().get(i).getBolsa() + "(" + listProject.get(id).getProfs().get(i).getBolsa() * listProject.get(id).getTempo() + " ) ");
         }
+    }
+    static void desfazer(Acoes undo, Acoes redo){
+        Stack stk;
+        stk = undo.getStkRedo();
+        redo.setStkUndo(undo.getStkUndo());
+        stk.pop();
+        undo.setStkRedo(stk);
+        System.out.println(redo.getStkUndo().get(0));
+        System.out.println(undo.getStkRedo().get(0));
+    }
+    static void refazer(Acoes undo, Acoes redo){
+        Stack stk;
+        stk = undo.getStkRedo();
+        stk.push(redo.getStkUndo());
+        undo.setStkRedo(stk);
+
+
     }
 }

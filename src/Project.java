@@ -13,6 +13,15 @@ public class Project {
     private int tempo;
     private String status;
 
+    public Acoes getStackProject() {
+        return stackProject;
+    }
+
+    public void setStackProject(Acoes stackProject) {
+        this.stackProject = stackProject;
+    }
+
+    private Acoes stackProject;
     public String getStatus() {
         return status;
     }
