@@ -11,7 +11,7 @@ public class ProjectManager {
         List<Atividades> listAtividades = new ArrayList<>();
         List<Project> listProject = new ArrayList<>();
         Acoes acoes = new Acoes();
-        Acoes redo = new Acoes();
+        Acoes undo = new Acoes();
         Scanner input = new Scanner(System.in);
         int identificador = 0;
         String login;
@@ -91,11 +91,11 @@ public class ProjectManager {
                     int suboption = input.nextInt();
                     input.nextLine();
                     if (suboption == 1) {
-                        addAtividade(input, listAtividades, listUser);
+                        addAtividade(input, listAtividades, listUser, acoes);
                     } else if (suboption == 2) {
-                        editAtividade(input, listAtividades, listUser);
+                        editAtividade(input, listAtividades, listUser, acoes);
                     } else if (suboption == 3) {
-                        delAtividade(input, listAtividades);
+                        delAtividade(input, listAtividades, acoes);
                     } else System.out.println("Opcao invalida!");
 
                 // Projetos
@@ -107,11 +107,11 @@ public class ProjectManager {
                     int suboption = input.nextInt();
                     input.nextLine();
                     if (suboption == 1) {
-                        addProject(input, listProject, listUser, listAtividades, identificador);
+                        addProject(input, listProject, listUser, listAtividades, identificador, acoes);
                     } else if (suboption == 2) {
-                        editProject(input, listProject, listUser, listAtividades, identificador);
+                        editProject(input, listProject, listUser, listAtividades, identificador, acoes);
                     } else if (suboption == 3) {
-                        delProject(input, listProject);
+                        delProject(input, listProject, acoes);
                     } else System.out.println("Opcao invalida!");
                 //Consultas
                 } else if (option == 4) {
@@ -148,14 +148,13 @@ public class ProjectManager {
                     System.out.println("Selecione uma opcao: ");
                     switch (opt){
                         case 1:
-                            desfazer(acoes, redo);
+                            desfazer(acoes, undo);
                         case 2:
-                            refazer(acoes, redo);
+                            refazer(acoes, undo);
                         default:
                             System.out.println("Opcao invalida!");
 
                     }
-                    desfazer(acoes, redo);
                 } else if (option == 10) {
                     logged = 0;
                 } else {
@@ -206,7 +205,8 @@ public class ProjectManager {
 
         }
     }
-    static void addAtividade(Scanner input, List<Atividades> listAtividades, List<Users> listUsers) throws ParseException {
+    static void addAtividade(Scanner input, List<Atividades> listAtividades, List<Users> listUsers, Acoes redo) throws ParseException {
+        Stack stack = new Stack();
         Atividades atividade = new Atividades();
         System.out.println("Digite o nome da atividade:");
         String ident = input.nextLine();
@@ -266,11 +266,14 @@ public class ProjectManager {
         atividade.setJobs(jobs);
         int size = listAtividades.size();
         atividade.setId(size);
+        stack.push(atividade);
+        redo.setStkRedo(stack);
         listAtividades.add(atividade);
         //System.out.println(func.get(0).getName());
     }
 
-    static void delAtividade(Scanner input, List<Atividades> listAtividade){
+    static void delAtividade(Scanner input, List<Atividades> listAtividade, Acoes redo){
+        Stack stack = new Stack();
         if (listAtividade.size()==0){
             System.out.println("Nao ha atividades cadastradas");
         }
@@ -280,11 +283,15 @@ public class ProjectManager {
                 System.out.println(listAtividade.get(i).getIdent() + " " + listAtividade.get(i).getDesc() + " " + listAtividade.get(i).getId());
             }
             int del = input.nextInt();
+            Atividades atividade = listAtividade.get(del);
             listAtividade.remove(del);
+            stack.push(atividade);
+            redo.setStkRedo(stack);
         }
     }
 
-    static void addProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades, int identificador) throws ParseException {
+    static void addProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades, int identificador, Acoes redo) throws ParseException {
+        Stack stack = new Stack();
         if(listUsers.get(identificador).getType().equals("Professor") || listUsers.get(identificador).getType().equals("Pesquisador")) {
             Project project = new Project();
             project.setStatus("Em processo de criacao");
@@ -401,6 +408,8 @@ public class ProjectManager {
                 project.setStatus("Iniciado");
             }
             else System.out.println("Opcao Invalida!");
+            stack.push(project);
+            redo.setStkRedo(stack);
             listProject.add(project);
         }
         else{
@@ -408,7 +417,8 @@ public class ProjectManager {
         }
         //System.out.println(func.get(0).getName());
     }
-    static void delProject(Scanner input, List<Project> listProject){
+    static void delProject(Scanner input, List<Project> listProject, Acoes redo){
+        Stack stack = new Stack<>();
         if (listProject.size()==0){
             System.out.println("Nao ha projetos cadastrados");
         }
@@ -418,6 +428,9 @@ public class ProjectManager {
                 System.out.println(listProject.get(i).getIdent() + " " + listProject.get(i).getDesc() + " " + listProject.get(i).getId());
             }
             int del = input.nextInt();
+            Project project = listProject.get(del);
+            stack.push(project);
+            redo.setStkRedo(stack);
             listProject.remove(del);
         }
     }
@@ -442,7 +455,8 @@ public class ProjectManager {
         redo.setStkRedo(stack);
     }
 
-    static void editAtividade(Scanner input, List<Atividades> listAtividades, List<Users> listUsers) throws ParseException {
+    static void editAtividade(Scanner input, List<Atividades> listAtividades, List<Users> listUsers, Acoes redo) throws ParseException {
+        Stack stack = new Stack();
         System.out.println("Selecione uma Atividade para atualizar");
         for(int i = 0; i < listAtividades.size(); i++){
             System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc() + " " + listAtividades.get(i).getId());
@@ -505,10 +519,13 @@ public class ProjectManager {
         System.out.println("digite as tarefas a serem realizadas:");
         String jobs = input.nextLine();
         atividade.setJobs(jobs);
+        stack.push(atividade);
+        redo.setStkRedo(stack);
         listAtividades.add(atividade);
     }
 
-    static void editProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades, int identificador) throws ParseException {
+    static void editProject(Scanner input, List<Project> listProject, List<Users> listUsers, List<Atividades> listAtividades, int identificador, Acoes redo) throws ParseException {
+        Stack stack = new Stack();
         System.out.println("Selecione uma Atividade para atualizar");
         for(int i = 0; i < listProject.size(); i++){
             System.out.println(listProject.get(i).getId() + " " + listProject.get(i).getDesc() + " " + listProject.get(i).getId());
@@ -622,6 +639,8 @@ public class ProjectManager {
             }
             else System.out.println("Opcao invalida!");
         }
+        stack.push(project);
+        redo.setStkRedo(stack);
         listProject.add(project);
     }
     static void consultaUser(List<Users> listUser){
