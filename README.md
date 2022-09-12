@@ -7,15 +7,15 @@ Projeto para Java na disciplina de Projeto de Software - Uso do Intellij para de
 ## Módulos do projeto
 
 * Main do projeto
-  *[Main] (https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/ProjectManager.java)
+  *[Main](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/ProjectManager.java)
 * Classe de Usuarios
-  * [Users] (https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/Users.java)
+  * [Users](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/Users.java)
 * Classe de Atividades
-  * [Activities] (https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/Atividades.java)
+  * [Activities](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/Atividades.java)
 * Classe de Projetos
-  * [Projects] (https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/Project.java)
+  * [Projects](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/Project.java)
 * Classe de Ações
-  *[Ações] (https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/Acoes.java)
+  *[Ações](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/blob/main/src/Acoes.java)
   
   ## Como executar?
   
