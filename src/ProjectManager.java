@@ -62,7 +62,8 @@ public class ProjectManager {
                         "6 - Mudar senha\n" +
                         "7 - Relatorios\n" +
                         "8 - Gerenciar bolsas (Projetos) \n" +
-                        "9 - Sair");
+                        "9 - Acoes \n" +
+                        "10 - Sair");
 
                 int option = input.nextInt();
                 input.nextLine();
@@ -144,17 +145,42 @@ public class ProjectManager {
                 }else if (option == 8) {
                     gerenciarBolsas(listProject);
                 } else if (option == 9) {
-                    int opt = 0;
-                    System.out.println("Selecione uma opcao: ");
-                    switch (opt){
-                        case 1:
-                            desfazer(acoes, undo);
-                        case 2:
-                            refazer(acoes, undo);
-                        default:
-                            System.out.println("Opcao invalida!");
-
-                    }
+                    int opt;
+                    System.out.println("Selecione uma opcao: \n" +
+                            "1 - Desfazer\n" +
+                            "2 - Refazer");
+                    opt = input.nextInt();
+                    input.nextLine();
+                    if(opt == 1) {
+                        System.out.println("DESFAZER:\n" +
+                                "1 - User\n" +
+                                "2 - Atividade\n" +
+                                "3 - Projeto");
+                        int subopt = input.nextInt();
+                        input.nextLine();
+                        if(subopt == 1){
+                            desfazer(acoes, undo, listUser);
+                        } else if (subopt == 2) {
+                            desfazer(acoes, undo, listAtividades);
+                        } else if (subopt == 3) {
+                            desfazer(acoes, undo, listProject);
+                        }
+                        else System.out.println("Opcao invalida!");
+                    } else if (opt == 2) {
+                        System.out.println("REFAZER:\n" +
+                                "1 - User\n" +
+                                "2 - Atividade\n" +
+                                "3 - Projeto");
+                        int subopt = input.nextInt();
+                        input.nextLine();
+                        if (subopt == 1){
+                            refazer(acoes, undo, listUser);
+                        } else if (subopt == 2) {
+                            refazer(acoes, undo, listAtividades);
+                        } else if (subopt == 3) {
+                            refazer(acoes, undo, listProject);
+                        }
+                    }else System.out.println("Opcao invalida!");
                 } else if (option == 10) {
                     logged = 0;
                 } else {
@@ -735,21 +761,33 @@ public class ProjectManager {
                     + listProject.get(id).getProfs().get(i).getBolsa() + "(" + listProject.get(id).getProfs().get(i).getBolsa() * listProject.get(id).getTempo() + " ) ");
         }
     }
-    static void desfazer(Acoes undo, Acoes redo){
+    static void desfazer(Acoes undo, Acoes redo, List padrao){
         Stack stk;
         stk = undo.getStkRedo();
-        redo.setStkUndo(undo.getStkUndo());
+        redo.setStkUndo(undo.getStkRedo());
+        var popped = stk.peek();
         stk.pop();
         undo.setStkRedo(stk);
-        System.out.println(redo.getStkUndo().get(0));
-        System.out.println(undo.getStkRedo().get(0));
+        if(padrao.contains(popped)){
+            padrao.remove(popped);
+        }
+        else{
+            padrao.add(popped);
+        }
     }
-    static void refazer(Acoes undo, Acoes redo){
+    static void refazer(Acoes undo, Acoes redo, List padrao){
         Stack stk;
         stk = undo.getStkRedo();
         stk.push(redo.getStkUndo());
         undo.setStkRedo(stk);
+        var peeked = stk.peek();
 
+        if(padrao.contains(peeked)){
+            padrao.remove(peeked);
+        }
+        else{
+            padrao.add(peeked);
+        }
 
     }
 }
