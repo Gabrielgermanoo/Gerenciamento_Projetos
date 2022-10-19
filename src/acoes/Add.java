@@ -33,7 +33,6 @@ public class Add extends Actions {
 
         int size = listUser.size();
         user.setId(size);
-        System.out.println(size);
         System.out.println("Digite o login:");
         String login = input.nextLine();
         user.setLogin(login);
@@ -54,15 +53,19 @@ public class Add extends Actions {
         System.out.println("Digite a descricao da atividade:");
         String desc = input.nextLine();
         atividade.setDesc(desc);
-        System.out.println("Digite a data de inicio da atividade: (dd/MM/yyyy hh:mm:ss)");
-        String inicio = input.nextLine();
-        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        Date datei = formatter.parse(inicio);
-        atividade.setInicio(datei);
-        System.out.println("digite a data de termino da atividade: (dd/MM/yyyy hh:mm:ss)");
-        String finall = input.nextLine();
-        Date datef = formatter.parse(finall);
-        atividade.setTermino(datef);
+        try {
+            System.out.println("Digite a data de inicio da atividade: (dd/MM/yyyy hh:mm:ss)");
+            String inicio = input.nextLine();
+            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            Date datei = formatter.parse(inicio);
+            atividade.setInicio(datei);
+            System.out.println("digite a data de termino da atividade: (dd/MM/yyyy hh:mm:ss)");
+            String finall = input.nextLine();
+            Date datef = formatter.parse(finall);
+            atividade.setTermino(datef);
+        } catch (ParseException e){
+            System.out.println("Formato de data nao correto, usar (dd/MM/yyyy hh:mm:ss)");
+        }
         System.out.println("Selecione o responsavel pela Atividade:");
         for (int i = 0; i < listUsers.size(); i++) {
             System.out.println(listUsers.get(i).getId() + "  - " + listUsers.get(i).getName());
@@ -239,4 +242,5 @@ public class Add extends Actions {
             System.out.println("Voce nao tem permissao para isso!");
         }
     }
+
 }

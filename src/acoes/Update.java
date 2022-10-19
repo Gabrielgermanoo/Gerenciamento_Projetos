@@ -97,19 +97,19 @@ public class Update extends Actions {
         redo.setStkRedo(stack);
         listAtividades.add(atividade);
     }
-    public static void editProject(Scanner input, List<Project> listProject, List<DefaultUser> listUsers, List<Atividade> listAtividades, int identificador, Actions redo) throws ParseException {
+    public static void editProject(Scanner input, List<Project> listProject, List<DefaultUser> listUsers, List<Atividade> listAtividades, int identificador, Actions redo) throws ParseException, NullPointerException {
         Stack stack = new Stack();
-        System.out.println("Selecione uma models.Atividade para atualizar");
+        System.out.println("Select a Project to update");
         for (Project value : listProject) {
             System.out.println(value.getId() + " " + value.getDesc() + " " + value.getId());
         }
         int numm = input.nextInt();
         input.nextLine();
         Project project = listProject.get(numm);
-        System.out.println("Digite o nome do Projeto:");
+        System.out.println("Type the name of Project:");
         String ident = input.nextLine();
         project.setIdent(ident);
-        System.out.println("Digite a descricao do Projeto:");
+        System.out.println("Describe the Project:");
         String desc = input.nextLine();
         project.setDesc(desc);
         System.out.println("Digite a data de inicio da atividade");

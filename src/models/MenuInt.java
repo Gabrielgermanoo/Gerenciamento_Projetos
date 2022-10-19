@@ -4,48 +4,54 @@ import acoes.*;
 import interfaces.Menu;
 
 import java.text.ParseException;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class MenuInt implements Menu {
     public void stringPrincipal(){
-        System.out.println("Selecione uma opcao: \n" +
-                "1 - Usuarios\n" +
-                "2 - Atividades\n" +
-                "3 - Projetos\n" +
-                "4 - Consultas\n" +
-                "5 - Mudar senha\n" +
-                "6 - Relatorios\n" +
-                "7 - Gerenciar bolsas (Projetos) \n" +
-                "8 - Acoes \n" +
-                "9 - Sair");
+        System.out.println("""
+                Selecione uma opcao:\s
+                1 - Usuarios
+                2 - Atividades
+                3 - Projetos
+                4 - Consultas
+                5 - Mudar senha
+                6 - Relatorios
+                7 - Gerenciar bolsas (Projetos)\s
+                8 - Acoes\s
+                9 - Sair""");
     }
     @Override
     public void stringUsers(){
-        System.out.println("Selecione uma opcao: \n" +
-                "1 - Cadastrar Usuario\n" +
-                "2 - Editar Usuario\n" +
-                "3 - Deletar Usuario");
+        System.out.println("""
+                Selecione uma opcao:\s
+                1 - Cadastrar Usuario
+                2 - Editar Usuario
+                3 - Deletar Usuario""");
     }
     @Override
     public void stringAtividades(){
-        System.out.println("Selecione uma opcao: \n" +
-                "1 - Cadastrar Atividade\n" +
-                "2 - Editar Atividade\n" +
-                "3 - Deletar Atividade");
+        System.out.println("""
+                Selecione uma opcao:\s
+                1 - Cadastrar Atividade
+                2 - Editar Atividade
+                3 - Deletar Atividade""");
     }
     @Override
     public void stringProject(){
-        System.out.println("Selecione uma opcao: \n" +
-                "1 - Cadastrar Projeto\n" +
-                "2 - Editar Projeto\n" +
-                "3 - Deletar Projeto");
+        System.out.println("""
+                Selecione uma opcao:\s
+                1 - Cadastrar Projeto
+                2 - Editar Projeto
+                3 - Deletar Projeto""");
     }
     @Override
     public void stringRelatorio(){
-        System.out.println("Relatorios:\n" +
-                "1 - Relatorio de projeto\n" +
-                "2 - Relatorio de atividade");
+        System.out.println("""
+                Relatorios:
+                1 - Relatorio de projeto
+                2 - Relatorio de atividade""");
     }
     @Override
     public void stringConsulta(){
@@ -55,22 +61,25 @@ public class MenuInt implements Menu {
     }
     @Override
     public void stringActions(){
-        System.out.println("Selecione uma opcao: \n" +
-                "1 - Desfazer\n" +
-                "2 - Refazer");
+        System.out.println("""
+                Selecione uma opcao:\s
+                1 - Desfazer
+                2 - Refazer""");
     }
     public void stringRefazer(){
-        System.out.println("REFAZER:\n" +
-                "1 - User\n" +
-                "2 - Atividade\n" +
-                "3 - Projeto");
+        System.out.println("""
+                REFAZER:
+                1 - User
+                2 - Atividade
+                3 - Projeto""");
     }
     @Override
     public void stringDesfazer(){
-        System.out.println("DESFAZER:\n" +
-                "1 - User\n" +
-                "2 - Atividade\n" +
-                "3 - Projeto");
+        System.out.println("""
+                DESFAZER:
+                1 - User
+                2 - Atividade
+                3 - Projeto""");
     }
 
 
@@ -78,7 +87,7 @@ public class MenuInt implements Menu {
 
     }
 
-    public void opcoesMenuI(Scanner input, List<DefaultUser> listUser, int identificador, String password, int logged, List<Project> listProject, Pilha redo, List<Atividade> listAtividade, Pilha undo) throws ParseException {
+    public void opcoesMenuI(Scanner input, List<DefaultUser> listUser, int identificador, String password, int logged, List<Project> listProject, Pilha redo, List<Atividade> listAtividade, Pilha undo) throws ParseException, NumberFormatException, NullPointerException, InputMismatchException {
         MenuInt menu = new MenuInt();
         Coordenador coordenador = new Coordenador();
         DefaultUser user = new DefaultUser();
@@ -110,7 +119,7 @@ public class MenuInt implements Menu {
                     stringProject();
                     option = input.nextInt();
                     switch (option) {
-                        case 1 -> Add.addProject(input, listProject, listUser, listAtividade, identificador, redo);
+                        case 1 -> Add.addProject(input,listProject, listUser, listAtividade, identificador, redo);
                         case 2 -> Update.editProject(input, listProject, listUser, listAtividade, identificador, redo);
                         case 3 -> Remove.delProject(input, listProject, redo);
                         default -> System.out.println("Opcao invalida!");
@@ -121,9 +130,11 @@ public class MenuInt implements Menu {
                     option = input.nextInt();
                     switch (option) {
                         case 1:
-                            System.out.println("Qual tipo de usuario você quer verificar?\n" +
-                                    "1 - Coordenadores\n" +
-                                    "2 - Todos os usuarios\n");
+                            System.out.println("""
+                                    Qual tipo de usuario você quer verificar?
+                                    1 - Coordenadores
+                                    2 - Todos os usuarios
+                                    """);
                             opt = input.nextInt();
                             switch (opt){
                                 case 1 -> Consulta.consultaUser(listUser, coordenador);
@@ -200,7 +211,7 @@ public class MenuInt implements Menu {
     }
 
     @Override
-    public void loggin(int logged, List<DefaultUser> listUser, int identificador, List<Project> listProject, Pilha redo, Pilha undo, List<Atividade> listAtividade, MenuExt menu, MenuInt menu1) throws ParseException {
+    public void loggin(int logged, List<DefaultUser> listUser, int identificador, List<Project> listProject, Pilha redo, Pilha undo, List<Atividade> listAtividade, MenuExt menu, MenuInt menu1) {
 
     }
 }

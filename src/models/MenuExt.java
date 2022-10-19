@@ -2,6 +2,7 @@ package models;
 
 import acoes.Add;
 import acoes.Pilha;
+import acoes.Process;
 import interfaces.Menu;
 
 import java.text.ParseException;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class MenuExt implements Menu {
-    public void opcoesMenuE(int logged, List<DefaultUser> listUser, int identificador, Pilha redo, Pilha undo, List<Project> listProject, List<Atividade> listAtividades, MenuExt menu, MenuInt menu1) throws ParseException {
+    public void opcoesMenuE(int logged, List<DefaultUser> listUser, int identificador, Pilha redo, Pilha undo, List<Project> listProject, List<Atividade> listAtividades, MenuExt menu, MenuInt menu1) throws ParseException, NumberFormatException, NullPointerException {
         loop: while (true) {
             Scanner input = new Scanner(System.in).useDelimiter("\n");
             menu.stringPrincipal();
@@ -29,15 +30,15 @@ public class MenuExt implements Menu {
         }
     }
     public void stringPrincipal(){
-        System.out.println("Selecione uma opcao:\n" +
-                "1 - Login\n" +
-                "2 - Cadastro de usuario\n" +
-                "3 - Sair");
+        System.out.println("""
+                Selecione uma opcao:
+                1 - Login
+                2 - Cadastro de usuario
+                3 - Sair""");
     }
     public int isLogged(int logged, List<DefaultUser> listUser, String login, String password, int identificador){
         for (DefaultUser defaultUser : listUser) {
             if (defaultUser.getLogin().equals(login) && defaultUser.getPassword().equals(password)) {
-                logged = 1;
                 System.out.println("Logado com sucesso!");
                 identificador = defaultUser.getId();
                 return 1;
@@ -47,7 +48,7 @@ public class MenuExt implements Menu {
         return 0;
     }
 
-    public void loggin(int logged, List<DefaultUser> listUser, int identificador, List<Project> listProject, Pilha redo, Pilha undo, List<Atividade> listAtividade, MenuExt menu, MenuInt menu1) throws ParseException {
+    public void loggin(int logged, List<DefaultUser> listUser, int identificador, List<Project> listProject, Pilha redo, Pilha undo, List<Atividade> listAtividade, MenuExt menu, MenuInt menu1) {
         //System.out.println(listUser.get(0).getName());
         Scanner input = new Scanner(System.in).useDelimiter("\n");
         System.out.println("Login:");
@@ -55,7 +56,7 @@ public class MenuExt implements Menu {
         System.out.println("Senha: ");
         String password = input.nextLine();
         while( menu.isLogged(logged, listUser, login, password, identificador) == 1) {
-            menu1.opcoesMenuI(input, listUser, identificador, password, logged, listProject, redo, listAtividade, undo);
+            Process.processMenuInt(menu1, input, listUser, identificador, password, logged, listProject, redo, listAtividade, undo);
             break;
         }
         //System.out.println(logged);
@@ -103,7 +104,7 @@ public class MenuExt implements Menu {
     }
 
     @Override
-    public void opcoesMenuI(Scanner input, List<DefaultUser> listUser, int identificador, String password, int logged, List<Project> listProject, Pilha redo, List<Atividade> listAtividade, Pilha undo) throws ParseException {
+    public void opcoesMenuI(Scanner input, List<DefaultUser> listUser, int identificador, String password, int logged, List<Project> listProject, Pilha redo, List<Atividade> listAtividade, Pilha undo) {
 
     }
 
