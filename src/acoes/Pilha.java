@@ -24,34 +24,41 @@ public class Pilha extends Actions {
     }
 
     public static void desfazer(Pilha undo, Pilha redo, List padrao) {
-        Stack stk;
-        stk = undo.getStkRedo();
-        redo.setStkUndo(undo.getStkRedo());
-        var popped = stk.peek();
-        stk.pop();
-        undo.setStkRedo(stk);
-        if(padrao.contains(popped)){
-            padrao.remove(popped);
+        try {
+            Stack stk;
+            stk = undo.getStkRedo();
+            redo.setStkUndo(undo.getStkRedo());
+            var popped = stk.peek();
+            stk.pop();
+            undo.setStkRedo(stk);
+            if(padrao.contains(popped)){
+                padrao.remove(popped);
+            }
+            else{
+                padrao.add(popped);
+            }
+        } catch (IllegalArgumentException e){
+            System.out.println("Empty list!");
         }
-        else{
-            padrao.add(popped);
-        }
+
 
     }
 
     public static void refazer(Pilha undo, Pilha redo, List padrao){
-        Stack stk;
-        stk = undo.getStkRedo();
-        stk.push(redo.getStkUndo());
-        undo.setStkRedo(stk);
-        var peeked = stk.peek();
+        try {
+            Stack stk;
+            stk = undo.getStkRedo();
+            stk.push(redo.getStkUndo());
+            undo.setStkRedo(stk);
+            var peeked = stk.peek();
 
-        if(padrao.contains(peeked)){
-            padrao.remove(peeked);
+            if (padrao.contains(peeked)) {
+                padrao.remove(peeked);
+            } else {
+                padrao.add(peeked);
+            }
+        } catch (IllegalArgumentException e ){
+            System.out.println("Empty list!");
         }
-        else{
-            padrao.add(peeked);
-        }
-
     }
 }
