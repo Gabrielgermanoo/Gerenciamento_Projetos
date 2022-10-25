@@ -53,19 +53,25 @@ public class Add extends Actions {
         System.out.println("Digite a descricao da atividade:");
         String desc = input.nextLine();
         atividade.setDesc(desc);
+        DateFormat formatter = null;
         try {
             System.out.println("Digite a data de inicio da atividade: (dd/MM/yyyy hh:mm:ss)");
             String inicio = input.nextLine();
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+            formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
             Date datei = formatter.parse(inicio);
             atividade.setInicio(datei);
+        } catch( ParseException e){
+            System.out.println("Wrong format data" + e.getMessage());
+        }
+        try {
             System.out.println("digite a data de termino da atividade: (dd/MM/yyyy hh:mm:ss)");
             String finall = input.nextLine();
             Date datef = formatter.parse(finall);
             atividade.setTermino(datef);
         } catch (ParseException e){
-            System.out.println("Formato de data nao correto, usar (dd/MM/yyyy hh:mm:ss)");
+            System.out.println("Wrong format data" + e.getMessage());
         }
+
         System.out.println("Selecione o responsavel pela Atividade:");
         for (int i = 0; i < listUsers.size(); i++) {
             System.out.println(listUsers.get(i).getId() + "  - " + listUsers.get(i).getName());
@@ -112,7 +118,6 @@ public class Add extends Actions {
         stack.push(atividade);
         redo.setStkRedo(stack);
         listAtividades.add(atividade);
-        //System.out.println(func.get(0).getName());
     }
     public static void addProject(Scanner input, List<Project> listProject, List<DefaultUser> listUsers, List<Atividade> listAtividades, int identificador, Actions redo) throws ParseException {
         Stack stack = new Stack();
@@ -127,23 +132,34 @@ public class Add extends Actions {
             System.out.println("Digite a descricao do Projeto:");
             String desc = input.nextLine();
             project.setDesc(desc);
-            System.out.println("Digite a data de inicio do projeto: (dd/MM/yyyy hh:mm:ss)");
-            String inicio = input.nextLine();
-            DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-            Date datei = formatter.parse(inicio);
-            project.setInicio(datei);
-            System.out.println("digite a data de termino do projeto: (dd/MM/yyyy hh:mm:ss)");
-            String finall = input.nextLine();
-            Date datef = formatter.parse(finall);
-            project.setTermino(datef);
-            Calendar m_calendar = Calendar.getInstance();
-            m_calendar.setTime(datei);
-            int nMonth1 = 12 * m_calendar.get(Calendar.YEAR)+ m_calendar.get(Calendar.MONTH);
-            m_calendar.setTime(datef);
-            int nMonth2 = 12*m_calendar.get(Calendar.YEAR) + m_calendar.get(Calendar.MONTH);
-            int diff = Math.abs(nMonth2 - nMonth1);
-            System.out.println("Tempo: " + diff + "meses)");
-            project.setTempo(diff);
+            DateFormat formatter = null;
+            Date datei = null;
+            try {
+                System.out.println("Digite a data de inicio do projeto: (dd/MM/yyyy hh:mm:ss)");
+                String inicio = input.nextLine();
+                formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                datei = formatter.parse(inicio);
+                project.setInicio(datei);
+            } catch (ParseException e){
+                System.out.println("Wrong format data" + e.getMessage());
+            }
+            try{
+                System.out.println("digite a data de termino do projeto: (dd/MM/yyyy hh:mm:ss)");
+                String finall = input.nextLine();
+                Date datef = formatter.parse(finall);
+                project.setTermino(datef);
+                Calendar m_calendar = Calendar.getInstance();
+                m_calendar.setTime(datei);
+                int nMonth1 = 12 * m_calendar.get(Calendar.YEAR)+ m_calendar.get(Calendar.MONTH);
+                m_calendar.setTime(datef);
+                int nMonth2 = 12*m_calendar.get(Calendar.YEAR) + m_calendar.get(Calendar.MONTH);
+                int diff = Math.abs(nMonth2 - nMonth1);
+                System.out.println("Tempo: " + diff + "meses)");
+                project.setTempo(diff);
+            } catch (ParseException e){
+                System.out.println("Wrong format data" + e.getMessage());
+            }
+
             System.out.println("Selecione o coordenador do projeto:");
             for (int i = 0; i < listUsers.size(); i++) {
                 if (listUsers.get(i).getClass().equals(type)) {
@@ -184,33 +200,36 @@ public class Add extends Actions {
             }
 
             project.setProfs(listUserp);
-
-            System.out.println("Selecione as atividades a serem realizadas:");
-            int inn = 0;
-            int sizeatividade = listAtividades.size();
-            List<Atividade> atividadess = new ArrayList<>();
-            while(inn != sizeatividade + 1) {
-                for (int i = 0; i < listAtividades.size(); i++) {
-                    System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc());
+            try {
+                System.out.println("Selecione as atividades a serem realizadas:");
+                int inn = 0;
+                int sizeatividade = listAtividades.size();
+                List<Atividade> atividadess = new ArrayList<>();
+                while (inn != sizeatividade + 1) {
+                    for (int i = 0; i < listAtividades.size(); i++) {
+                        System.out.println(listAtividades.get(i).getId() + " " + listAtividades.get(i).getDesc());
+                    }
+                    int num1 = input.nextInt();
+                    Atividade atividadeaux = listAtividades.get(num1);
+                    atividadess.add(atividadeaux);
+                    if (atividadess.size() == listAtividades.size()) {
+                        inn += sizeatividade + 1;
+                    }
+                    System.out.println("Adicionar mais uma atividade?\n" +
+                            "1 - Selecionar\n" +
+                            "2 - Nao selecionar");
+                    int aa = input.nextInt();
+                    input.nextLine();
+                    if (aa == 2) inn = sizeatividade + 1;
+                    else if (aa == 1) {
+                        inn = 0;
+                    }
                 }
-                int num1 = input.nextInt();
-                Atividade atividadeaux = listAtividades.get(num1);
-                atividadess.add(atividadeaux);
-                if(atividadess.size() == listAtividades.size()){
-                    inn += sizeatividade + 1;
-                }
-                System.out.println("Adicionar mais uma atividade?\n" +
-                        "1 - Selecionar\n" +
-                        "2 - Nao selecionar");
-                int aa = input.nextInt();
-                input.nextLine();
-                if (aa == 2) inn = sizeatividade + 1;
-                else if (aa == 1) {
-                    inn = 0;
-                }
+                project.setAtividades(atividadess);
+            } catch (IllegalArgumentException e){
+                System.out.println("Empty Activity list!" + " " + e.getMessage());
             }
-            project.setAtividades(atividadess);
-            System.out.println("models.Bolsa para cada profissional");
+            System.out.println("Bolsa para cada profissional");
             for (int i = 0; i < listUsers.size(); i++) {
                 System.out.println(listUserp.get(i).getName() + " " );
                 Double valor = input.nextDouble();

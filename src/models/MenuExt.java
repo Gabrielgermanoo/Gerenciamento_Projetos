@@ -23,6 +23,7 @@ public class MenuExt implements Menu {
                     Add.addUser(input, listUser, redo);
                     break;
                 case 3:
+                    System.out.println("You logged out! See you next time.");
                     break loop;
                 default:
                     System.out.println("Opcao invalida!");

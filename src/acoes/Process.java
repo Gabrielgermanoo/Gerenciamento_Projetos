@@ -14,7 +14,7 @@ public class Process {
             try {
                 menu.opcoesMenuE(logged, listUser, identificador, redo, undo, listProject, listAtividades, menu, menu1);
             } catch (ParseException e){
-                System.out.println("Date format wrong, please use -> (dd/MM/yyyy hh:mm:ss)" + "Error: " + e.getMessage());
+                System.out.println("Date format wrong, please use -> (dd/MM/yyyy hh:mm:ss)" + " - " + "Error: " + e.getMessage());
             }
             catch (NumberFormatException e){
                 System.out.println("Wrong input." +

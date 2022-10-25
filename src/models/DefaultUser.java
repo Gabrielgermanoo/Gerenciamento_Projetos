@@ -68,13 +68,17 @@ public class DefaultUser implements Users {
 
     public void changePass(List<DefaultUser> listUser, int identificador, String password){
         Scanner input = new Scanner(System.in);
-        System.out.println("Qual a nova senha?");
-        for(int i = 0; i < listUser.size(); i++){
-            if(listUser.get(i).getId() == identificador){
-                password = input.nextLine();
-                listUser.get(i).setPassword(password);
+        try{
+            System.out.println("Qual a nova senha?");
+            for(int i = 0; i < listUser.size(); i++){
+                if(listUser.get(i).getId() == identificador){
+                    password = input.nextLine();
+                    listUser.get(i).setPassword(password);
+                }
             }
+            System.out.println("Alterada com sucesso!");
+        } catch (IllegalArgumentException e){
+            System.out.println("Empty list of users!");
         }
-        System.out.println("Alterada com sucesso!");
     }
 }

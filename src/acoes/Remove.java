@@ -54,7 +54,7 @@ public class Remove extends Actions {
     public static void delUser(Scanner input, List<DefaultUser> listUser, Actions redo){
         Stack stack = new Stack();
         Users user;
-        if (listUser.size()==0){
+        if (listUser.size() <= 1){
             System.out.println("Nao ha funcionarios cadastrados");
         }
         else {
