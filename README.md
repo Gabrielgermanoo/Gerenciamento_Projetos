@@ -38,3 +38,19 @@ Nesta entrega, refatorei o código para torná-lo eficaz e reduzir a quantidade 
  ### Entrega 3:
 Nesta entrega, voltada para as exceções, serviu para evitar que erros run time para que o código saia legítimo e evite quebras ao executar.
 
+ ## Code Smells
+Nesse tópico iremos abordar alguns Code Smells que estão presentes no código atualmente.
+* Duplicate Code 
+Quando possui expressões iguais em dois métodos na mesma classe
+* Data Clumps
+Quando um grupo de parametros vão juntos
+* Long Method
+No caso em que há várias condicionais agrupadas e acumulo de informação para variáveis locais
+* Large Class
+Quando uma classe faz mais do que devia. Presente no código ao ter vários métodos e variáveis
+* Shotgun Surgery (Acredito que é um dos mais presentes)
+Acontece em uma pequena mudança no código que faz com que tenha várias pequenas mudanças em diferentes classes.
+* Lazy Class
+Classe que tem apenas uma subclasse
+* Data Class
+Classes que tem campos que estão fazendo apenas métodos get e set.
