@@ -1,6 +1,6 @@
 package models;
 
-import acoes.*;
+import operations.*;
 import interfaces.Menu;
 
 import java.text.ParseException;
@@ -31,7 +31,7 @@ public class MenuInt implements Menu {
                 3 - Deletar Usuario""");
     }
     @Override
-    public void stringAtividades(){
+    public void stringActivities(){
         System.out.println("""
                 Selecione uma opcao:\s
                 1 - Cadastrar Atividade
@@ -51,7 +51,7 @@ public class MenuInt implements Menu {
         System.out.println("""
                 Relatorios:
                 1 - Relatorio de projeto
-                2 - Relatorio de atividade""");
+                2 - Relatorio de activity""");
     }
     @Override
     public void stringConsulta(){
@@ -87,10 +87,10 @@ public class MenuInt implements Menu {
 
     }
 
-    public void opcoesMenuI(Scanner input, List<DefaultUser> listUser, int identificador, String password, int logged, List<Project> listProject, Pilha redo, List<Atividade> listAtividade, Pilha undo) throws ParseException, NumberFormatException, NullPointerException, InputMismatchException {
+    public void optMenuI(Scanner input, List<DefaultUser> listUser, int identificador, String password, int logged, List<Project> listProject, Pilha redo, List<Activity> listActivity, Pilha undo) throws ParseException, NumberFormatException, NullPointerException, InputMismatchException {
         MenuInt menu = new MenuInt();
         Coordenador coordenador = new Coordenador();
-        DefaultUser user = new DefaultUser();
+        DefaultUser user = DefaultUser.createDefaultUser();
         loop: while(true) {
             menu.stringPrincipal();
             int opt = input.nextInt();
@@ -106,12 +106,12 @@ public class MenuInt implements Menu {
                     }
                     break;
                 case 2:
-                    stringAtividades();
+                    stringActivities();
                     option = input.nextInt();
                     switch (option) {
-                        case 1 -> Add.addAtividade(input, listAtividade, listUser, redo);
-                        case 2 -> Update.editAtividade(input, listAtividade, listUser, redo);
-                        case 3 -> Remove.delAtividade(input, listAtividade, redo);
+                        case 1 -> Add.addAtividade(input, listActivity, listUser, redo);
+                        case 2 -> Update.editAtividade(input, listActivity, listUser, redo);
+                        case 3 -> Remove.delAtividade(input, listActivity, redo);
                         default -> System.out.println("Opcao invalida!");
                     }
                     break;
@@ -119,8 +119,8 @@ public class MenuInt implements Menu {
                     stringProject();
                     option = input.nextInt();
                     switch (option) {
-                        case 1 -> Add.addProject(input,listProject, listUser, listAtividade, identificador, redo);
-                        case 2 -> Update.editProject(input, listProject, listUser, listAtividade, identificador, redo);
+                        case 1 -> Add.addProject(input,listProject, listUser, listActivity, identificador, redo);
+                        case 2 -> Update.editProject(input, listProject, listUser, listActivity, identificador, redo);
                         case 3 -> Remove.delProject(input, listProject, redo);
                         default -> System.out.println("Opcao invalida!");
                     }
@@ -137,15 +137,15 @@ public class MenuInt implements Menu {
                                     """);
                             opt = input.nextInt();
                             switch (opt){
-                                case 1 -> Consulta.consultaUser(listUser, coordenador);
-                                case 2 -> Consulta.consultaUser(listUser);
+                                case 1 -> Query.consultaUser(listUser, coordenador);
+                                case 2 -> Query.consultaUser(listUser);
                                 default -> System.out.println("Opcao invalida!");
                             }
                         case 2:
-                            Consulta.consultaAtividade(listAtividade);
+                            Query.consultaAtividade(listActivity);
                             break;
                         case 3:
-                            Consulta.consultaProject(listProject);
+                            Query.consultaProject(listProject);
                             break;
                         default:
                             System.out.println("Opcao invalida!");
@@ -158,13 +158,13 @@ public class MenuInt implements Menu {
                     stringRelatorio();
                     option = input.nextInt();
                     switch (option) {
-                        case 1 -> Relatorio.projetoRelatorio(listProject);
-                        case 2 -> Relatorio.atividadeRelatorio(listAtividade);
+                        case 1 -> Reports.projetoRelatorio(listProject);
+                        case 2 -> Reports.atividadeRelatorio(listActivity);
                         default -> System.out.println("Opcao invalida!");
                     }
                     break;
                 case 7:
-                    Bolsa.gerenciarBolsas(listProject);
+                    Bolsa.bountyManager(listProject);
                     break;
                 case 8:
                     stringActions();
@@ -175,19 +175,21 @@ public class MenuInt implements Menu {
                             opt = input.nextInt();
                             switch (opt) {
                                 case 1 -> Pilha.desfazer(redo, undo, listUser);
-                                case 2 -> Pilha.desfazer(redo, undo, listAtividade);
+                                case 2 -> Pilha.desfazer(redo, undo, listActivity);
                                 case 3 -> Pilha.desfazer(redo, undo, listProject);
                                 default -> System.out.println("Opcao invalida!");
                             }
+                            break;
                         case 2:
                             stringRefazer();
                             opt = input.nextInt();
                             switch (opt) {
                                 case 1 -> Pilha.refazer(redo, undo, listUser);
-                                case 2 -> Pilha.refazer(redo, undo, listAtividade);
+                                case 2 -> Pilha.refazer(redo, undo, listActivity);
                                 case 3 -> Pilha.refazer(redo, undo, listProject);
                                 default -> System.out.println("Opcao invalida!");
                             }
+                            break;
                         default:
                             System.out.println("Opcao invalida!");
                     }
@@ -201,7 +203,7 @@ public class MenuInt implements Menu {
         }
     }
     @Override
-    public void opcoesMenuE(int logged, List<DefaultUser> listUser, int identificador, Pilha redo, Pilha undo, List<Project> listProject, List<Atividade> listAtividades, MenuExt menu, MenuInt menu1) {
+    public void optMenuE(int logged, List<DefaultUser> listUser, int identificador, Pilha redo, Pilha undo, List<Project> listProject, List<Activity> listActivities, MenuExt menu, MenuInt menu1) {
 
     }
 
@@ -211,7 +213,7 @@ public class MenuInt implements Menu {
     }
 
     @Override
-    public void loggin(int logged, List<DefaultUser> listUser, int identificador, List<Project> listProject, Pilha redo, Pilha undo, List<Atividade> listAtividade, MenuExt menu, MenuInt menu1) {
+    public void login(int logged, List<DefaultUser> listUser, int identificador, List<Project> listProject, Pilha redo, Pilha undo, List<Activity> listActivity, MenuExt menu, MenuInt menu1) {
 
     }
 }

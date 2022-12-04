@@ -1,18 +1,19 @@
-package acoes;
+package operations;
 
 import models.*;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Process {
-    public static void processMenuExt(MenuExt menu, int logged, List<DefaultUser> listUser, int identificador, Pilha redo, Pilha undo, List<Project> listProject, List<Atividade> listAtividades, MenuInt menu1){
+    public static void processMenuExt(MenuExt menu, int logged, List<DefaultUser> listUser, int identificador, Pilha redo, Pilha undo, List<Project> listProject, List<Activity> listActivities, MenuInt menu1){
         boolean ready = false;
         while(!ready){
             try {
-                menu.opcoesMenuE(logged, listUser, identificador, redo, undo, listProject, listAtividades, menu, menu1);
+                menu.optMenuE(logged, listUser, identificador, redo, undo, listProject, listActivities, menu, menu1);
             } catch (ParseException e){
                 System.out.println("Date format wrong, please use -> (dd/MM/yyyy hh:mm:ss)" + " - " + "Error: " + e.getMessage());
             }
@@ -32,11 +33,11 @@ public class Process {
             }
         }
     }
-    public static void processMenuInt(MenuInt menu, Scanner input, List<DefaultUser> listUser, int identificador, String password, int logged, List<Project> listProject, Pilha redo, List<Atividade> listAtividade, Pilha undo){
+    public static void processMenuInt(MenuInt menu, Scanner input, List<DefaultUser> listUser, int identificador, String password, int logged, List<Project> listProject, Pilha redo, List<Activity> listActivity, Pilha undo){
         boolean ready = false;
         while(!ready){
             try {
-                menu.opcoesMenuI(input, listUser, identificador, password, logged, listProject, redo, listAtividade, undo);
+                menu.optMenuI(input, listUser, identificador, password, logged, listProject, redo, listActivity, undo);
             } catch (ParseException e){
                 System.out.println("Date format wrong, please use -> (dd/MM/yyyy hh:mm:ss)" + "Error: " + e.getMessage());
             } catch( NullPointerException e){
@@ -51,6 +52,19 @@ public class Process {
             finally {
                 ready = true;
             }
+        }
+    }
+    public static void init(){
+        MenuExt menuE = new MenuExt();
+        MenuInt menuI = new MenuInt();
+        List<DefaultUser> listUser = new ArrayList<>();
+        List<Activity> listActivity = new ArrayList<>();
+        List<Project> listProject = new ArrayList<>();
+        Pilha redo = new Pilha(), undo = new Pilha();
+        int logged = 0, identificador = 0;
+        while(true) {
+            processMenuExt(menuE, logged, listUser, identificador, redo, undo, listProject, listActivity, menuI);
+            break;
         }
     }
 }

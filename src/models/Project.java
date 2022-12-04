@@ -2,33 +2,44 @@ package models;
 
 import interfaces.Users;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Project {
-    private String ident;
-    private String desc;
-    private Date inicio;
-    private Date termino;
-    private Users resp;
-    private int id;
-    private int tempo;
-    private String status;
-    private DefaultUser coord;
-
+    protected String ident;
+    protected String desc;
+    protected Date begin;
+    protected Date end;
+    protected DefaultUser resp;
+    protected int id;
+    protected int tempo;
+    protected String status;
+    protected DefaultUser coord;
+    private String jobs;
+    private List<Activity> activities;
     private List<DefaultUser> profs;
 
-    public List<Atividade> getAtividades() {
-        return atividades;
+    private Project(){
+        this.resp = new DefaultUser();
+        this.coord = new Coordenador();
+        this.activities = new ArrayList<>();
+        this.profs = new ArrayList<>();
     }
 
-    public void setAtividades(List<Atividade> atividades) {
-        this.atividades = atividades;
+    public static Project createProject() {
+        return new Project();
     }
 
-    private String jobs;
 
-    private List<Atividade> atividades;
+    public List<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(List<Activity> activities) {
+        this.activities = activities;
+    }
+
 
     public DefaultUser getCoord() {
         return coord;
@@ -36,10 +47,6 @@ public class Project {
 
     public void setCoord(DefaultUser coord) {
         this.coord = coord;
-    }
-
-    public Project(){
-
     }
     public String getIdent() {
         return ident;
@@ -57,27 +64,27 @@ public class Project {
         this.desc = desc;
     }
 
-    public Date getInicio() {
-        return inicio;
+    public Date getBegin() {
+        return begin;
     }
 
-    public void setInicio(Date inicio) {
-        this.inicio = inicio;
+    public void setBegin(Date begin) {
+        this.begin = begin;
     }
 
-    public Date getTermino() {
-        return termino;
+    public Date getEnd() {
+        return end;
     }
 
-    public void setTermino(Date termino) {
-        this.termino = termino;
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
     public Users getResp() {
         return resp;
     }
 
-    public void setResp(Users resp) {
+    public void setResp(DefaultUser resp) {
         this.resp = resp;
     }
 

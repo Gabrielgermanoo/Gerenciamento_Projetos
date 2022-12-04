@@ -1,17 +1,17 @@
-package acoes;
+package operations;
 
-import models.Atividade;
+import models.Activity;
 import models.Coordenador;
 import models.DefaultUser;
 import models.Project;
 
 import java.util.List;
 
-public class Consulta extends Actions {
-    public static void consultaAtividade(List<Atividade> listAtividade) {
+public class Query extends Actions {
+    public static void consultaAtividade(List<Activity> listActivity) {
         try {
-            for (int i = 0; i < listAtividade.size(); i++) {
-                System.out.println(listAtividade.get(i).getId() + " " + listAtividade.get(i).getDesc());
+            for (Activity activity : listActivity) {
+                System.out.println(activity.getId() + " " + activity.getDesc());
             }
         } catch (IllegalArgumentException e){
             System.out.println("No Activities listed");
@@ -20,8 +20,8 @@ public class Consulta extends Actions {
 
     public static void consultaProject(List<Project> listProject) {
         try {
-            for (int i = 0; i < listProject.size(); i++) {
-                System.out.println(listProject.get(i).getId() + " " + listProject.get(i).getDesc());
+            for (Project project : listProject) {
+                System.out.println(project.getId() + " " + project.getDesc());
             }
         }catch (IllegalArgumentException e){
             System.out.println("No Projects listed");
@@ -29,8 +29,8 @@ public class Consulta extends Actions {
     }
 
     public static void consultaUser(List<DefaultUser> listUser) {
-        for (int i = 0; i < listUser.size(); i++) {
-            System.out.println(listUser.get(i).getName() + " - " + listUser.get(i).getClass().toString());
+        for (DefaultUser defaultUser : listUser) {
+            System.out.println(defaultUser.getName() + " - " + defaultUser.getClass().toString());
         }
     }
 

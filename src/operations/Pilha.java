@@ -1,4 +1,4 @@
-package acoes;
+package operations;
 
 import java.util.List;
 import java.util.Stack;

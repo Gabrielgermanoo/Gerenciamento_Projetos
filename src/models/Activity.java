@@ -2,22 +2,29 @@ package models;
 
 import interfaces.Users;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Atividade {
-    public Atividade(){
-
+public class Activity {
+    private Activity(){
+        this.resp = new DefaultUser();
+        this.profs = new ArrayList<>();
+    }
+    public static Activity createActivity() {
+        return new Activity();
     }
 
     private String ident;
     private String desc;
-    private Date inicio;
-    private Date termino;
+    private Date begin;
+    private Date end;
     private Users resp;
     private int id;
     private List<Users> profs;
     private String jobs;
+
+
 
     public String getIdent() {
         return ident;
@@ -35,20 +42,20 @@ public class Atividade {
         this.desc = desc;
     }
 
-    public Date getInicio() {
-        return inicio;
+    public Date getBegin() {
+        return begin;
     }
 
-    public void setInicio(Date inicio) {
-        this.inicio = inicio;
+    public void setBegin(Date begin) {
+        this.begin = begin;
     }
 
-    public Date getTermino() {
-        return termino;
+    public Date getEnd() {
+        return end;
     }
 
-    public void setTermino(Date termino) {
-        this.termino = termino;
+    public void setEnd(Date end) {
+        this.end = end;
     }
 
     public Users getResp() {

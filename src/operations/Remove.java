@@ -1,8 +1,7 @@
-package acoes;
+package operations;
 
 import interfaces.Users;
-import acoes.Actions;
-import models.Atividade;
+import models.Activity;
 import models.DefaultUser;
 import models.Project;
 
@@ -15,15 +14,15 @@ public class Remove extends Actions {
 
     }
 
-    public static void delProject(Scanner input, List<Project> listProject, Actions redo){
-        Stack stack = new Stack<>();
+    public static void delProject(Scanner input, List<Project> listProject, Pilha redo){
+        Stack<Object> stack = new Stack<>();
         if (listProject.size()==0){
             System.out.println("Nao ha projetos cadastrados");
         }
         else {
             System.out.println("Qual Projeto quer deletar? selecione um id:");
-            for (int i = 0; i < listProject.size(); i++) {
-                System.out.println(listProject.get(i).getIdent() + " " + listProject.get(i).getDesc() + " " + listProject.get(i).getId());
+            for (Project value : listProject) {
+                System.out.println(value.getIdent() + " " + value.getDesc() + " " + value.getId());
             }
             int del = input.nextInt();
             Project project = listProject.get(del);
@@ -33,34 +32,34 @@ public class Remove extends Actions {
         }
     }
 
-    public static void delAtividade(Scanner input, List<Atividade> listAtividade, Actions redo){
-        Stack stack = new Stack();
-        if (listAtividade.size()==0){
+    public static void delAtividade(Scanner input, List<Activity> listActivity, Pilha redo){
+        Stack<Activity> stack = new Stack<>();
+        if (listActivity.size()==0){
             System.out.println("Nao ha atividades cadastradas");
         }
         else {
-            System.out.println("Qual atividade quer deletar? selecione um id:");
-            for (int i = 0; i < listAtividade.size(); i++) {
-                System.out.println(listAtividade.get(i).getIdent() + " " + listAtividade.get(i).getDesc() + " " + listAtividade.get(i).getId());
+            System.out.println("Qual activity quer deletar? selecione um id:");
+            for (Activity value : listActivity) {
+                System.out.println(value.getIdent() + " " + value.getDesc() + " " + value.getId());
             }
             int del = input.nextInt();
-            Atividade atividade = listAtividade.get(del);
-            listAtividade.remove(del);
-            stack.push(atividade);
+            Activity activity = listActivity.get(del);
+            listActivity.remove(del);
+            stack.push(activity);
             redo.setStkRedo(stack);
         }
     }
 
-    public static void delUser(Scanner input, List<DefaultUser> listUser, Actions redo){
-        Stack stack = new Stack();
+    public static void delUser(Scanner input, List<DefaultUser> listUser, Pilha redo){
+        Stack<Users> stack = new Stack<>();
         Users user;
         if (listUser.size() <= 1){
             System.out.println("Nao ha funcionarios cadastrados");
         }
         else {
             System.out.println("Qual funcionario quer deletar? selecione um id:");
-            for (int i = 0; i < listUser.size(); i++) {
-                System.out.println(listUser.get(i).getName() + " " + listUser.get(i).getId());
+            for (DefaultUser defaultUser : listUser) {
+                System.out.println(defaultUser.getName() + " " + defaultUser.getId());
             }
             int del = input.nextInt();
             input.nextLine();

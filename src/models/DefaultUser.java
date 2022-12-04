@@ -11,7 +11,11 @@ public class DefaultUser implements Users {
     private static String password;
 
 
-    public DefaultUser() {
+    DefaultUser() {
+    }
+
+    public static DefaultUser createDefaultUser() {
+        return new DefaultUser();
     }
 
     public String getLogin() {
@@ -19,7 +23,7 @@ public class DefaultUser implements Users {
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        DefaultUser.login = login;
     }
 
     public String getPassword() {
@@ -27,7 +31,7 @@ public class DefaultUser implements Users {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        DefaultUser.password = password;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class DefaultUser implements Users {
 
 
     public void consultaUser(){
-        System.out.println(this.name + this.login);
+        System.out.println(this.name + login);
     }
 
 
@@ -70,10 +74,10 @@ public class DefaultUser implements Users {
         Scanner input = new Scanner(System.in);
         try{
             System.out.println("Qual a nova senha?");
-            for(int i = 0; i < listUser.size(); i++){
-                if(listUser.get(i).getId() == identificador){
+            for (DefaultUser defaultUser : listUser) {
+                if (defaultUser.getId() == identificador) {
                     password = input.nextLine();
-                    listUser.get(i).setPassword(password);
+                    defaultUser.setPassword(password);
                 }
             }
             System.out.println("Alterada com sucesso!");
