@@ -13,6 +13,10 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class Update extends Actions {
+    public Update(ArrayList<DefaultUser> users, ArrayList<Project> projects, ArrayList<Activity> activities) {
+        super(users, projects, activities);
+    }
+
     public static void editUser(Scanner input, List<DefaultUser> listUser, Pilha redo){
         Stack stack = new Stack();
         System.out.println("Select a user to update");

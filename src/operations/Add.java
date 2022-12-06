@@ -11,6 +11,10 @@ import java.time.ZoneId;
 import java.util.*;
 
 public class Add extends Actions {
+    public Add(List<DefaultUser> users, List<Project> projects, List<Activity> activities) {
+        super(users, projects, activities);
+    }
+
     public static void addUser(Scanner input, List<DefaultUser> listUser, Pilha redo){
         DefaultUser user = DefaultUser.createDefaultUser();
         Stack<DefaultUser> stack = new Stack<>();
@@ -20,27 +24,26 @@ public class Add extends Actions {
                 2 - Nao""");
         int opt = input.nextInt();
         input.nextLine();
-        if(opt == 1){
-            user = new Coordenador();
-        } else if (opt == 2) {
-            stringExtract("selecionado usuario padrao");
-        }
-        else{
-            stringExtract("Opcao invalida! Usuario padrao selecionado!");
-        }
+
+        UserFactory.getUser(opt);
+
         stringExtract("Digite o nome:");
         String name = getString(input);
-        user.setName(name);
+        //user.setName(name);
 
         int size = listUser.size();
-        user.setId(size);
+        //user.setId(size);
         stringExtract("Digite o login:");
         String login = getString(input);
-        user.setLogin(login);
+        //user.setLogin(login);
         stringExtract("Digite a senha:");
         String password = getString(input);
-        user.setPassword(password);
+        //user.setPassword(password);
 
+        user .addName(name)
+             .addId(size)
+             .addLogin(login)
+             .addPassword(password);
 
         stack.push(user);
         redo.setStkRedo(stack);
@@ -157,8 +160,10 @@ public class Add extends Actions {
                 String finall = getString(input);
                 Date datef = formatter.parse(finall);
                 project.setEnd(datef);
+
                 Calendar m_calendar = getCalendar();
                 setFormatDate(datei, m_calendar);
+
                 int nMonth1 = 12 * m_calendar.get(Calendar.YEAR)+ m_calendar.get(Calendar.MONTH);
                 setFormatDate(datef, m_calendar);
                 int nMonth2 = 12*m_calendar.get(Calendar.YEAR) + m_calendar.get(Calendar.MONTH);

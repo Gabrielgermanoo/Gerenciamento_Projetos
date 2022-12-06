@@ -1,11 +1,19 @@
 package operations;
 
+import models.Activity;
+import models.DefaultUser;
+import models.Project;
+
 import java.util.List;
 import java.util.Stack;
 
 public class Pilha extends Actions {
     private Stack setStkUndo;
     private Stack setStkRedo;
+
+    public Pilha(List<DefaultUser> users, List<Project> projects, List<Activity> activities) {
+        super(users, projects, activities);
+    }
 
     public Stack getSetStkUndo() {
         return setStkUndo;

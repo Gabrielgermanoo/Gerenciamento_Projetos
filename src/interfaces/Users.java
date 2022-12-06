@@ -15,4 +15,9 @@ public interface Users {
     void consultaUser();
     String getPassword();
     void setPassword(String password);
+    DefaultUser addName(String name);
+    DefaultUser addLogin(String login);
+
+    void addPassword(String password);
+    DefaultUser addId(int id);
 }

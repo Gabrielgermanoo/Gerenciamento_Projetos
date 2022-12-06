@@ -5,9 +5,14 @@ import models.Coordenador;
 import models.DefaultUser;
 import models.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Query extends Actions {
+    public Query(ArrayList<DefaultUser> users, ArrayList<Project> projects, ArrayList<Activity> activities) {
+        super(users, projects, activities);
+    }
+
     public static void consultaAtividade(List<Activity> listActivity) {
         try {
             for (Activity activity : listActivity) {

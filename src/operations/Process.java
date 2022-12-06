@@ -60,7 +60,7 @@ public class Process {
         List<DefaultUser> listUser = new ArrayList<>();
         List<Activity> listActivity = new ArrayList<>();
         List<Project> listProject = new ArrayList<>();
-        Pilha redo = new Pilha(), undo = new Pilha();
+        Pilha redo = new Pilha(listUser, listProject, listActivity), undo = new Pilha(listUser, listProject, listActivity);
         int logged = 0, identificador = 0;
         while(true) {
             processMenuExt(menuE, logged, listUser, identificador, redo, undo, listProject, listActivity, menuI);

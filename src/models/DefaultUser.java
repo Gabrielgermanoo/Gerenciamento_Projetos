@@ -6,12 +6,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DefaultUser implements Users {
-    private String name;
-    private static String login;
-    private static String password;
-
-
+    protected String name, login, password;
+    protected int id;
     DefaultUser() {
+
     }
 
     public static DefaultUser createDefaultUser() {
@@ -23,7 +21,7 @@ public class DefaultUser implements Users {
     }
 
     public void setLogin(String login) {
-        DefaultUser.login = login;
+        this.login = login;
     }
 
     public String getPassword() {
@@ -31,7 +29,7 @@ public class DefaultUser implements Users {
     }
 
     public void setPassword(String password) {
-        DefaultUser.password = password;
+        this.password = password;
     }
 
     @Override
@@ -68,7 +66,24 @@ public class DefaultUser implements Users {
         System.out.println(this.name + login);
     }
 
+    public DefaultUser addName(String name){
+        this.name = name;
+        return this;
+    }
 
+    public DefaultUser addLogin(String login){
+        this.login = login;
+        return this;
+    }
+
+    public void addPassword(String password){
+        this.password = password;
+    }
+
+    public DefaultUser addId(int id){
+        this.id = id;
+        return this;
+    }
 
     public void changePass(List<DefaultUser> listUser, int identificador, String password){
         Scanner input = new Scanner(System.in);

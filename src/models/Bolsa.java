@@ -2,11 +2,16 @@ package models;
 
 import operations.Actions;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.IntStream;
 
 public class Bolsa extends Actions {
+    public Bolsa(ArrayList<DefaultUser> users, ArrayList<Project> projects, ArrayList<Activity> activities) {
+        super(users, projects, activities);
+    }
+
     public static void bountyManager(List<Project> listProject){
         Scanner input = new Scanner(System.in);
         for (Project project : listProject) {

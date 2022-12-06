@@ -1,12 +1,18 @@
 package operations;
 
 import models.Activity;
+import models.DefaultUser;
 import models.Project;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Reports extends Actions {
+    public Reports(ArrayList<DefaultUser> users, ArrayList<Project> projects, ArrayList<Activity> activities) {
+        super(users, projects, activities);
+    }
+
     public static void projetoRelatorio(List<Project> listProject){
         try {
             Scanner input = new Scanner(System.in);

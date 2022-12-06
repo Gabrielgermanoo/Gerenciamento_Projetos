@@ -10,7 +10,8 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class Remove extends Actions {
-    public Remove(){
+    public Remove(List<DefaultUser> users, List<Project> projects, List<Activity> activities){
+        super(users, projects, activities);
 
     }
 
