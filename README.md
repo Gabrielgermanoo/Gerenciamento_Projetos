@@ -11,9 +11,9 @@ Projeto para Java na disciplina de Projeto de Software - Uso do Intellij para de
 * Parte 2 do projeto (Otimizado usando Orientação a Objetos)
     * [Entrega 2](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/commit/d1143de821b99e00f3e36c554dbfcc1c4850526f)
 * Parte 3 do projeto (Identificação dos smells)
-    * [Entrega 3](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/commit/2b47746094d204fb9b23bab21bac1dc92214e888)
+    * [Entrega 3](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/commit/cdf8e7c79dffba6821a8a32a5c3c60f1a1ff8332)
 * Parte 4 do projeto (Aplicação de padrões de projeto)
-    * [Entrega 4]()
+    * [Entrega 4](https://github.com/Gabrielgermanoo/Gerenciamento_Projetos/commit/d6237b6b09c536908bb6fd839f1f0adf57a9b3cb)
 
   ## Como executar?
 
